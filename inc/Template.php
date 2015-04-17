@@ -2,7 +2,7 @@
 
 class Template {
 	
-	static function displayTemplate($name, array &$tags) {
+	static function displayTemplate($name, array $tags) {
 		$template = self::getTemplateText($name);
 		echo self::prepareTemplate($template, $tags);
 	}
@@ -17,7 +17,7 @@ class Template {
 		return file_get_contents("./html/{$name}.html");
 	}
 	
-	static function prepareTemplate($template, array &$tags) {
+	static function prepareTemplate($template, array $tags) {
 		foreach ($tags as $name => $value) {
 			$template = str_replace("{{$name}}", $value, $template);
 		}

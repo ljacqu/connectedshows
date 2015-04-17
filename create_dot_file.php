@@ -17,11 +17,11 @@ $type = ['min' => false, 'max' => false, 'sum' => false];
 $unit = ['n' => false, 'p' => false];
 
 do {
-	// Input validation
-	if (isset($_POST['shows']) && is_array($_POST['shows']) && all_numeric($_POST['shows'])) {
+	if (!isset($_POST['shows'])) {
+		break;
+	} else if (is_array($_POST['shows']) && all_numeric($_POST['shows'])) {
 		$shows = $_POST['shows'];
-	}
-	else {
+	} else {
 		$form_error .= '<br>Please select the shows to include.';
 	}
 
@@ -133,9 +133,10 @@ Template::displayTemplate('create_dot_file', $tags);
 function create_radios($name, array $options, array $text) {
 	$result = "";
 	foreach ($options as $value => $is_checked) {
-		$result .= "\n<input type=\"radio\" name=\"$name\" value=\"$value\""
+		$id = $name . $value;
+		$result .= "\n<input type=\"radio\" name=\"$name\" value=\"$value\" id=\"$id\""
 			. ($is_checked ? ' checked="checked"' : '')
-			. "> " . current($text);
+			. "> <label for=\"$id\">" . current($text) . "</label>";
 		next($text);
 	}
 	return $result;

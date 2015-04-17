@@ -6,24 +6,25 @@
     <link rel="stylesheet" type="text/css" href="./html/style.css">
  </head>
  <body>
-   <h1>View Connections</h1>
-{result}
-<div class="error">{form_error}</div>
+    <div class="crumbs"><a href="index.php">Main</a> &raquo; View TV Show Connections</div>
+    <h1>View Show Connections</h1>
+    {result}
+    <div class="error">{form_error}</div>
 
-<form method="post">
-  File name: <input type="text" name="file" value="{form_file}">
-  <br>Only within selected shows: <input type="checkbox" name="limited"{checked_limited}>
-  <br>Episode threshold: <input type="text" name="threshold" value="{form_threshold}">
-  <br><span style="font-size: 0.8em">In order to consider an actor as connection, he must have played
-   in at least as many episodes as the threshold in either show.</span>
-  <br>
-  <br>Threshold type: 
-  <br>Threshold <var>t</var> must be &lt;= {radio_type}
-  <br>Unit {radio_unit}
-  <br>{form_shows}
-  <br>
-  <br><input type="submit" value="Create graph">
-</form>
+    <form method="post">
+      File name: <input type="text" name="file" value="{form_file}">
+      <br>Only within selected shows: <input type="checkbox" name="limited"{checked_limited}>
+      <br>Episode threshold: <input type="text" name="threshold" value="{form_threshold}">
+      <br><span style="font-size: 0.8em">In order to consider an actor as connection, he must have played
+       in at least as many episodes as the threshold in either show.</span>
+      <br>
+      <br>Threshold type: 
+      <br>Threshold <var>t</var> must be &lt;= {radio_type}
+      <br>Unit {radio_unit}
+      <br>{form_shows}
+      <br>
+      <br><input type="submit" class="submit" value="Create graph">
+    </form>
    
  </body>
 </html>

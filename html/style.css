@@ -33,3 +33,13 @@ label:hover {
     color: #930;
     margin: 15px 0;
 }
+.pagelist li {
+    margin-bottom: 7px;
+    font-size: 0.9em;
+    list-style-type: lower-greek;
+}
+.crumbs {
+    font-size: 0.8em;
+    font-style: italic;
+    margin-bottom: 25px;
+}
