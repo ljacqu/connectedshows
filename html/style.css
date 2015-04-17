@@ -1,0 +1,30 @@
+body {
+    color: #124;
+    background-color: #fff;
+    font-family: Arial;
+    font-size: 14pt;
+    margin: 20px 35px;
+}
+h1 {
+    font-weight: normal;
+    font-size: 1.5em;
+    margin: 15px 0 30px 0;
+    color: #d40;
+}
+textarea, input {
+    border: 1px solid #000;
+    background-color: #f5f5ff;
+    padding: 3px;
+    font-family: Arial;
+}
+input.submit {
+    border: 1px outset #339;
+    background-color: #def;
+    margin: 5px 8px;
+}
+input.submit:hover {
+    background-color: #fff5f5;
+}
+label:hover {
+    color: #d40;
+}
