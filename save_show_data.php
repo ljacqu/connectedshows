@@ -1,51 +1,49 @@
 <?php
 error_reporting(E_ALL);
-$title = 'Save show data';
-require './inc/header.php';
 require './inc/functions.php';
+require './inc/Template.php';
 
 $display_reset_button = false;
 $show_input = isset($_POST['id']) ? $_POST['id'] : '';
+$result = '';
+$error = '';
 
 do {
-	if ('' === trim($show_input)) {
+	if (empty($show_input)) {
 		break;
 	}
-	echo '<h1>Saving Show Data</h1>';
 	
 	// Accept full URLs, tt1266020 or 1266020 as options
 	$show_input_id = get_imdb_id($show_input);
 	if ($show_input_id === false) {
-		echo '<br>Error! Did not recognize a valid URL/ID.';
+		$error .= '<br>Did not recognize a valid URL/ID.';
 		break;
 	}
 	$url = get_imdb_cast_url($show_input_id);
 	
 	// Get webpage
-	$result = get_web_page($url);
-	if ($result['errno'] != 0 || $result['http_code'] != 200) {
-		$result['content'] = null;
-		var_dump($result);
-		echo '<br>Error fetching page!';
+	$webpage = get_web_page($url);
+	if ($webpage['errno'] != 0 || $webpage['http_code'] != 200) {
+		$error .= "<br>Error fetching page! {$webpage['errno']} : {$webpage['errmsg']}";
 		break;
 	}
 	
 	// Trim webpage down to table
-	$cast_html = explode('</tr>', get_cast_table($result['content']));
+	$cast_html = explode('</tr>', get_cast_table($webpage['content']));
 	
 	// Get series title & id
-	$title_preg = '/<h3 itemprop="name">\s+'
-			. '<a href="\/title\/tt([0-9]+)\/\?ref_=ttfc_fc_tt"\s+itemprop=\'url\'>'
-			. '(.*?)<\/a>/';
-	if (preg_match($title_preg, $result['content'], $matches)) {
+	$title_preg = '~<h3 itemprop="name">\s+'
+			. '<a href="/title/tt([0-9]+)/\?ref_=ttfc_fc_tt"\s+itemprop=\'url\'>'
+			. '(.*?)</a>~';
+	if (preg_match($title_preg, $webpage['content'], $matches)) {
 		$show_title = $matches[2];
 		$show_id    = $matches[1];
 		if ($show_id != $show_input_id) {
-			echo '<br>Show ID did not match from URL! Aborting.';
+			$error .= '<br>Show ID did not match from URL! Aborting.';
 			break;
 		}
 	} else {
-		echo '<br>Could not extract ID/name';
+		$error .= '<br>Could not extract ID/name';
 		break;
 	}
 	
@@ -69,7 +67,7 @@ do {
 
 			$entry[] = [$id, $name, $role, $episodes];
 		} else {
-			echo '<br>Skipped HTML piece ' . htmlspecialchars($cast);
+			$result .= '<br>Skipped HTML line: ' . htmlspecialchars($cast);
 		}
 	}
 	
@@ -80,7 +78,7 @@ do {
 		if (isset($_POST['reset'])) {
 			$dbh->deleteShow($show_id);
 		} else {
-			echo '<br>Show already exists! Did not save.';
+			$result .= '<br>Show already exists! Did not save.';
 			$display_reset_button = true;
 			break;
 		}
@@ -88,21 +86,19 @@ do {
 	
 	// Save show & output info
 	$dbh->saveShowInfo($show_title, $show_id, $entry);
-	echo '<hr>Saved show info for ' . $show_title . ' (' . $show_id . ')';
-	echo '<br>Actors: ' . count($entry);
-
+	$result .= "<br><br>Saved show info for $show_title ($show_id)";
+	$result .= '<br>Actors: ' . count($entry);
 } while(0);
 
-echo "<h1>Save Show Data</h1>
-<form action='{$_SERVER['PHP_SELF']}' method='post'>
-	<textarea name='id' cols='90' rows='3'>" . htmlspecialchars($show_input) . "</textarea>
-    <br><input type='submit' name='submit' class='submit' value='Save show'>";
-
-if ($display_reset_button) {
-	echo ' <input type="submit" name="reset" value="Reset" class="submit">';
-}
-
-echo "\n</form>";
+$tags = [
+	'result'     => $result,
+	'form_error' => $error,
+	'form_input' => htmlspecialchars($show_input),
+	'form_reset_button' => ($display_reset_button 
+			? ' <input type="submit" name="reset" value="Reset" class="submit">' 
+			: '')
+];
+Template::displayTemplate('save_show_data', $tags);
 
 
 

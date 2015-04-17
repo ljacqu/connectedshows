@@ -28,3 +28,8 @@ input.submit:hover {
 label:hover {
     color: #d40;
 }
+.error {
+    font-size: 1em;
+    color: #930;
+    margin: 15px 0;
+}

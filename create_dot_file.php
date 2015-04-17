@@ -119,7 +119,7 @@ $tags = [
 	'form_error' => $form_error,
 	'php_self'   => $_SERVER['PHP_SELF'],
 	'form_file'  => $form_file,
-	'checked_limited' => ($limited ? 'checked="checked"' : ''),
+	'checked_limited' => ($limited ? ' checked="checked"' : ''),
 	'form_threshold'  => $threshold,
 	'radio_type' => $radio_type,
 	'radio_unit' => $radio_unit,

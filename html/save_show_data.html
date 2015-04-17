@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <meta charset="utf-8">
+    <title>Show Connections &mdash; Save Show Data</title>
+    <link rel="stylesheet" type="text/css" href="./html/style.css">
+ </head>
+ <body>
+    <h1>Save Show Data</h1>
+    {result}
+    <div class="error">{form_error}</div>
+
+    <form method="post">
+      <textarea name="id" cols="90" rows="3">{form_input}</textarea>
+      <br><input type="submit" name="submit" class="submit" value="Save show">
+      {form_reset_button}
+    </form>
+ </body>
+</html>
