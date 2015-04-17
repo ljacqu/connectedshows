@@ -1,7 +1,7 @@
 <?php
-function make_shows_dropdown($show_data, $checked_shows=null) {
-	$checked_shows = (!empty($checked_shows) && is_array($checked_shows))
-			? $checked_shows : [];
+
+
+function make_shows_dropdown(Traversable $show_data, array $checked_shows=[]) {
 	$output = '';
 	
 	foreach ($show_data as $show) {

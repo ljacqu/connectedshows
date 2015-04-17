@@ -5,31 +5,53 @@ class DotWriter {
 	private $filename;
 	/** @var string[] */
 	private $showToId;
+	/**
+	 * Function which determines the width of the edge.
+	 * float penwidthFn(int $commonActors)
+	 * @var callable
+	 */
+	private $penwidthFn;
+	/**
+	 * Function to determine what color an edge should have.
+	 * string colorFn(float $penwidth, int $showid1, int $showid2)
+	 * @var callable
+	 */
+	private $colorFn;
 	
-	function __construct($filename) {
+	function __construct($filename, $penwidthFn, $colorFn) {
 		$this->filename = $filename;
-		$this->showToId = [];
+		$this->penwidthFn = $penwidthFn;
+		$this->colorFn = $colorFn;
 	}
 	
-	function createFile(Traversable $rows, callable $penwidth, callable $color, $rand=false) {
+	function createFile(Traversable $rows, $rand=false) {
+		$this->showToId = [];
 		$contents = "";
 		foreach ($rows as $connection) {
 			$contents .= "\n\t" . $this->createEntry(
-					$connection['show1'],
-					$connection['show2'],
-					$connection['common_actors'],
-					$penwidth,
-					$color);
+					[$connection['showid1'], $connection['show1']],
+					[$connection['showid2'], $connection['show2']],
+					$connection['common_actors']);
 		}
 		$contents = $this->createShowRegister($rand) . "\n" . $contents;
 		$contents = "graph {" . $contents . "\n}";
 		$this->saveToFile($contents);
 	}
 	
-	private function createEntry($show1, $show2, $commonActors, callable $penwidth, callable $color) {
-		$show = [$this->showToId($show1), $this->showToId($show2)];
-		return $show[0] . " -- " . $show[1] 
-							. " [penwidth=" . $penwidth($commonActors) . ",color=\"".$color()."\"];";
+	/**
+	 * Generates the Dot line for one show connection
+	 * @param array $show1 [0 => show_id, 1 => show_name]
+	 * @param array $show2 [0 => show_id, 1 => show_name]
+	 * @param int $commonActors Number of actors the shows share
+	 * @return string The generated Dot line
+	 */
+	private function createEntry(array $show1, array $show2, $commonActors) {
+		$penwidthFn = $this->penwidthFn;
+		$colorFn    = $this->colorFn;
+		$showId = [$this->showToId($show1), $this->showToId($show2)];
+		$penwidth = $penwidthFn($commonActors);
+		return "{$showId[0]} -- {$showId[1]} [penwidth=$penwidth," 
+			. "color=\"" . $colorFn($penwidth, $show1[0], $show2[0]) . "\"]";
 	}
 	
 	private function saveToFile($contents) {
@@ -50,19 +72,18 @@ class DotWriter {
 		return $output;
 	}
 	
-	private function showToId($show) {
-		$key = $this->dotFriendlyHash($show);
+	/**
+	 * Register the show as node in the graph; return an ID for the show
+	 *  that is valid for the DOT format (may not start with digit).
+	 * @param string[] $show [0=>id, 1=>name]
+	 * @return string Dot-conform ID
+	 */
+	private function showToId(array $show) {
+		$key = 'm' . $show[0];
 		if (!isset($this->showToId[$key])) {
-			$this->showToId[$key] = $show;
+			$this->showToId[$key] = $show[1]; // TODO -----------------------------------------
 		}
 		return $key;
-	}
-
-	private function dotFriendlyHash($title) {
-		return str_replace(
-				range(0, 9),
-				range('g', 'p'),
-				substr(md5($title), 0, 8));
 	}
 	
 	private function shuffleAssoc($list) {

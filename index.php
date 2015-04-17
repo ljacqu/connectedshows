@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 require './inc/Template.php';
 
 $pages = [
-	'create_dot_file' => 'Generate graph',
+	'create_dot_file' => 'View TV Show Connections',
 	'save_show_data' => 'Save show data'
 ];
 

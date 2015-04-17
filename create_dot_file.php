@@ -17,29 +17,24 @@ $type = ['min' => false, 'max' => false, 'sum' => false];
 $unit = ['n' => false, 'p' => false];
 
 do {
-	if (!isset($_POST['shows'])) {
-		break;
-	} else if (is_array($_POST['shows']) && all_numeric($_POST['shows'])) {
+	if (isset($_POST['shows']) && is_array($_POST['shows']) && all_numeric($_POST['shows'])) {
 		$shows = $_POST['shows'];
 	} else {
 		$form_error .= '<br>Please select the shows to include.';
 	}
-
-	if (isset($_POST['file']) && is_scalar($_POST['file']) 
-		&& preg_match('/^[a-z0-9-_\(\)]+(\.dot)?$/i', $_POST['file'], $matches)) {
-		$form_file = $_POST['file'] . (isset($matches[1]) ? '' : '.dot');
-		if (file_exists('./gen/' . $form_file)) {
-			$result .= 'Note: file already exists... overwriting';
-		}
-	}
-	else if (!empty($form_error)) {
-		if (isset($_POST['file']) && is_scalar($_POST['file'])) {
+	
+	if (isset($_POST['file']) && is_scalar($_POST['file'])) {
+		if (preg_match('/^[a-z0-9-_\(\)]+(\.dot)?$/i', $_POST['file'], $matches)) {
+			$form_file = $_POST['file'] . (isset($matches[1]) ? '' : '.dot');
+			if (file_exists('./gen/' . $form_file)) {
+				$result .= 'Note: file already exists... overwriting';
+			}
+		} else {
 			$form_file = htmlspecialchars($_POST['file']);
 			$form_error .= '<br>Please enter a valid filename!';
 		}
-		else {
-			$form_error .= '<br>Please enter a filename.';	
-		}
+	} else {
+		$form_error .= '<br>Please enter a filename.';
 	}
 
 	
@@ -59,7 +54,10 @@ do {
 		$unit['n'] = true;
 	}
 
-	if (!empty($form_error)) break;
+	if (!empty($form_error)) {
+		if (!isset($_POST['shows'])) $form_error = '';
+		break;
+	}
 	
 	$limited = isset($_POST['limited']);
 
@@ -75,19 +73,19 @@ do {
 	}
 	
 	// Write DOT file
-	$penwidth = function ($connections) {
+	$penwidth = function ($common_actors) {
 		$max = 3;
-		$weighted_edge = round(pow($connections, 1/1.5), 2);
+		$weighted_edge = round(pow($common_actors, 1/1.5), 2);
 		return $weighted_edge <= $max ? $weighted_edge : $max;
 	};
-	$color_function = function () {
+	$color_function = function ($penwidth, $show1, $show2) {
 		//$colors = ['red', 'dodgerblue2', 'chartreuse4', 'darkorchid2', 'darkorange', 'gold', 'chocolate4', 'deeppink3', 'gray19'];
 		//return $colors[rand(0, count($colors)-1)];
 		return 'black';
 	};
 	require './inc/DotWriter.php';
-	$dot_writer = new DotWriter('./gen/' . $form_file);
-	$dot_writer->createFile($query, $penwidth, $color_function);
+	$dot_writer = new DotWriter('./gen/' . $form_file, $penwidth, $color_function);
+	$dot_writer->createFile($query);
 	
 	// Output success and some figures
 	$max_connections = max_connections($limited, $shows, $dbh);
@@ -128,8 +126,15 @@ $tags = [
 Template::displayTemplate('create_dot_file', $tags);
 
 
-// =============================================================================
-  
+/**
+ * Creates HTML output of radios
+ * @param string $name The name of the radio (HTML name attribute)
+ * @param array $options The options of the radio, where the key is the option
+ *  value and the associated value a boolean, indicating if it is checked
+ * @param array $text The text next to the radio (key: option value,
+ *   value: text ot show)
+ * @return string The generated HTML code
+ */
 function create_radios($name, array $options, array $text) {
 	$result = "";
 	foreach ($options as $value => $is_checked) {
