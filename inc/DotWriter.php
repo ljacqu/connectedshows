@@ -37,7 +37,8 @@ class DotWriter {
 					$connection['common_actors']);
 		}
 		$contents = $this->createShowRegister($rand) . "\n" . $contents;
-		$contents = "graph {" . $contents . "\n}";
+		$contents = "graph {\n node [target=\"_top\"];\n edge [target=\"_top\"];\n" 
+			. $contents . "\n}";
 		$this->saveToFile($contents);
 	}
 	
@@ -53,8 +54,10 @@ class DotWriter {
 		$colorFn    = $this->colorFn;
 		$showId = [$this->showToId($show1), $this->showToId($show2)];
 		$penwidth = $penwidthFn($commonActors);
+		$href = "../connection.php?$show1-$show2";
 		return "{$showId[0]} -- {$showId[1]} [penwidth=$penwidth," 
-			. "color=\"" . $colorFn($penwidth, $show1, $show2) . "\"]";
+			. "color=\"" . $colorFn($penwidth, $show1, $show2) . "\","
+			. "href=\"$href\"]";
 	}
 	
 	private function saveToFile($contents) {
@@ -70,7 +73,8 @@ class DotWriter {
 		$output = '';
 		if ($rand) $this->showToId = $this->shuffleAssoc($this->showToId);
 		foreach ($this->showToId as $key => $name) {
-			$output .= "\n\t{$key} [label=\"{$name}\"];";
+			$href = "../show.php?" . substr($key, 1);
+			$output .= "\n\t{$key} [label=\"{$name}\",href=\"$href\"];";
 		}
 		return $output;
 	}
@@ -92,7 +96,7 @@ class DotWriter {
 	private function shuffleAssoc($list) {
 		$keys = array_keys($list); 
 		shuffle($keys); 
-		$random = array(); 
+		$random = array();
 		foreach ($keys as $key) { 
 			$random[$key] = $list[$key]; 
 		}

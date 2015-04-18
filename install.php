@@ -161,16 +161,7 @@ function register_db_error(TestItem $test_item, PDOException $ex) {
 }
 
 
-class TestItem {
-	const DIRS_EXIST   = 0;
-	const GEN_WRITABLE = 1;
-	const DB_LOGIN     = 2;
-	const DB_SHOWS     = 3;
-	const EXEC_EXISTS  = 4;
-	const DOT_EXEC     = 5;
-	const CURL_EXISTS  = 6;
-	const CURL_PAGE    = 7;
-	
+class TestItem {	
 	public $testName;
 	public $message;
 	public $cssClass;
@@ -183,7 +174,6 @@ class TestItem {
 	function setError($err) {
 		$this->message = $err;
 		$this->cssClass = 'testbad';
-		$this->hasError = true;
 	}
 	
 	function getMessage() {

@@ -96,13 +96,16 @@ do {
 		. '<br>We would expect a maximum of ' . $max_connections . ' connections.';
 	
 	// If desired/allowed, run DOT command
-	$output_file = './gen/' . substr($form_file, 0, -4) . '.png';
-	$cmd = "dot -Tpng \"./gen/$form_file\" -o \"$output_file\"";
+	//$output_file = './gen/' . substr($form_file, 0, -4) . '.png';
+	//$cmd = "dot -Tpng \"./gen/$form_file\" -o \"$output_file\"";
+	$output_file = './gen/' . substr($form_file, 0, -4) . '.svg';
+	$cmd = "dot -Tsvg \"./gen/$form_file\" -o \"$output_file\"";
 	exec($cmd);
 	
 	$result .= '<hr>Created .png file.'
 		. "<br><a href=\"{$output_file}\">"
-		. "<img src=\"{$output_file}\" alt=\"Graph\" style=\"max-width: 100%; max-height: 100%\">"
+		//. "<img src=\"{$output_file}\" alt=\"Graph\" style=\"max-width: 100%; max-height: 100%\">"
+		. "<object data=\"$output_file\" type=\"image/svg+xml\"></object>"
 		. "</a>";
 	
 } while(0);
