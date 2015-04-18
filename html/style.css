@@ -8,17 +8,20 @@ body {
 h1 {
     font-weight: normal;
     font-size: 1.5em;
-    margin: 15px 0 30px 0;
+    margin: 15px 0 10px 0;
     color: #d40;
 }
 textarea, input {
     border: 1px solid #000;
-    background-color: #f5f5ff;
-    padding: 3px;
+    border-radius: 2px;
+    background-color: #f9f9ff;
+    padding: 3px 5px;
     font-family: Arial;
+    font-size: 0.8em;
 }
 input.submit {
     border: 1px outset #339;
+    border-radius: 0;
     background-color: #def;
     margin: 5px 8px;
 }
@@ -30,7 +33,7 @@ label:hover {
 }
 .error {
     font-size: 1em;
-    color: #930;
+    color: #f00;
     margin: 15px 0;
 }
 .errorbox {

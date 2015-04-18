@@ -7,14 +7,26 @@
  </head>
  <body>
     <div class="crumbs"><a href="index.php">Main</a> &raquo; Save Show Data</div>
-    <h1>Save Show Data</h1>
-    {result}
-    <div class="error">{form_error}</div>
-
     <form method="post">
-      <textarea name="id" cols="90" rows="3">{form_input}</textarea>
-      <br><input type="submit" name="submit" class="submit" value="Save show">
-      {form_reset_button}
+      <div style="float: left; padding-right: 50px; display: table-cell">
+       <h1>Save show data</h1>
+       {result}
+       <div class="error">{form_error}</div>
+       <label for="id">Enter the IMDb.com URL of a TV show.</label>
+       <br><input name="id" id="id" size="60" value="{form_input}">
+       <br><input type="submit" name="submit" class="submit" value="Save show">
+       {form_reset_button}
+      </div>
+    </form>
+    <form method="get" action="http://www.google.com/search">
+     <div style="float: right; display: table-cell; font-size: 0.8em; margin-right: 30px; border: 1px solid #99f; padding: 5px">
+       <h1 style="margin-bottom: 3px">Find IMDb link for show</h1>
+       <span style="font-style: italic">Search for a show on IMDb.com</span>
+       <br>
+       <br><label for="q">Show title:</label> <input type="text" name="q" id="q" size="32" maxlength="255" value="">
+       <input type="hidden" name="sitesearch" value="imdb.com/title/">
+       <br><input type="submit" value="Search IMDb" class="submit">
+     </div>
     </form>
  </body>
 </html>

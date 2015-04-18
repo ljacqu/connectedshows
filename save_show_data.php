@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL);
+require 'config.php';
 require './inc/functions.php';
 require './inc/Template.php';
 
@@ -78,7 +79,7 @@ do {
 		if (isset($_POST['reset'])) {
 			$dbh->deleteShow($show_id);
 		} else {
-			$result .= '<br>Show already exists! Did not save.';
+			$error .= '<br>Show already exists! Did not save.';
 			$display_reset_button = true;
 			break;
 		}
@@ -151,11 +152,11 @@ function get_cast_table($html) {
 function get_imdb_id($url) {
 	// http://www.imdb.com/title/tt3155320/?ref_=rvi_tt
 	// http://www.imdb.com/title/tt3155320/fullcredits?ref_=tt_ov_st_sm
-	$movie_pattern = '~^http://www\.imdb.com/title/tt([0-9]+)/'
-			. '(fullcredits)?(\?ref_=[a-z_]+)?$~';
+	$movie_pattern = '~^(http://)?(www\.)?imdb.com/title/tt(?<id>[0-9]+)'
+			. '(/[a-z0-9=&_\?-]*)?~';
 	
 	if (preg_match($movie_pattern, $url, $matches)) {
-		return $matches[1];
+		return $matches['id'];
 	}
 	else if (preg_match('/^tt([0-9]+)$/', $url, $matches)) {
 		return $matches[1];
