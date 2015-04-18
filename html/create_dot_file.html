@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <title>Show Connections &mdash; Make Graph File</title>
     <link rel="stylesheet" type="text/css" href="./html/style.css">
+    <script type="text/javascript" src="./html/formtoggle.js"></script>
  </head>
- <body>
+ <body onload="checkallbox('all', 'shows[]')">
     <div class="crumbs"><a href="index.php">Main</a> &raquo; View TV Show Connections</div>
     <h1>View TV Show Connections</h1>
     {result}
@@ -21,8 +22,8 @@
       <br>Threshold type: 
       <br>Threshold <var>t</var> must be &lt;= {radio_type}
       <br>Unit {radio_unit}
+      <br><label for="all">All:</label> <input type="checkbox" id="all" name="all" onchange="toggleboxes(this, 'shows[]')">
       <br>{form_shows}
-      <br>
       <br><input type="submit" class="submit" value="Create graph">
     </form>
    
