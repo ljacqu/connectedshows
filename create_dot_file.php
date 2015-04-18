@@ -85,7 +85,7 @@ do {
 		return 'black';
 	};
 	require './inc/DotWriter.php';
-	$dot_writer = new DotWriter('./gen/' . $form_file, $penwidth, $color_function);
+	$dot_writer = new DotWriter('./gen/' . $form_file, $penwidth, $color_function, $dbh);
 	$dot_writer->createFile($query);
 	
 	// Output success and some figures
@@ -152,7 +152,7 @@ function max_connections($limited, array $shows, DatabaseHandler $dbh) {
 	if ($limited) {
 		return count($shows) * (count($shows)-1) / 2;
 	} else {
-		$total_shows = $dbh->getAllShows()->rowCount(); // TODO -------------------------------
+		$total_shows = $dbh->getTotalShows();
 		return count($shows) * ($total_shows-1) / 2;
 	}
 }

@@ -2,10 +2,8 @@
 # tag = {list}, e.g. (1520211, 1741256)
 # tag = {constraint} valid SQL constraint
 
-SELECT `shows1`.`title` AS `show1`,
-       `shows1`.`id`    AS `showid1`,
-       `shows2`.`title` AS `show2`,
-       `shows2`.`id`    AS `showid2`,
+SELECT `shows1`.`id` AS `show1`,
+       `shows2`.`id` AS `show2`,
        `actors` AS `common_actors`
 FROM (
     SELECT COUNT(`p`.`actor_id`) AS `actors`,

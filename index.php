@@ -16,6 +16,7 @@ try {
 		$problem = true;
 	} else {
 		$dbh = new DatabaseHandler;
+		$dbh->getTotalShows();
 	}
 } catch (PDOException $ex) {
 	$problem = true;

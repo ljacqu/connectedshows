@@ -8,14 +8,8 @@ Constraint: Valid SQL code. For instance:
 SELECT `show1`, `show2`, COUNT(`actor`) AS `common_actors`
 FROM (
     SELECT `p1`.`actor_id` AS `actor`,
-    # `p1`.`show_id`  AS `show1`,
-    # `p1`.`episodes` AS `episodes1`,
-    # `m1`.`episodes` AS `max1`,
-      `s1`.`title`    AS `show1`,
-    # `p2`.`show_id`  AS `show2`,
-    # `p2`.`episodes` AS `episodes2`,
-    # `m2`.`episodes` AS `max2`
-      `s2`.`title`    AS `show2`,
+      `s1`.`id`    AS `show1`,
+      `s2`.`id`    AS `show2`,
       `p1`.`episodes`/`m1`.`episodes` AS `rate1`,
       `p2`.`episodes`/`m2`.`episodes` AS `rate2`
     FROM `played_in` `p1`

@@ -13,9 +13,9 @@ class DatabaseHandler {
 	/** @var PDOStatement */
 	private $actorExistsQuery;
 	/** @var PDOStatement */
-	private $showExistsQuery;
-	/** @var PDOStatement */
 	private $maxEpisodeQuery;
+	/** @var PDOStatement */
+	private $showTitleQuery;
 	
 	function __construct() {
 		global $config;
@@ -51,12 +51,18 @@ class DatabaseHandler {
 	}
 	
 	function getTotalShows() {
-		return $this->dbh->query('SELECT COUNT(`id`) FROM `shows`')->fetch();
+		$result = $this->dbh->query('SELECT COUNT(`id`) FROM `shows`')->fetch();
+		return $result[0];
 	}
 	
 	function showExists($id) {
-		$this->showExistsQuery->execute([$id]);
-		return ($this->showExistsQuery->rowCount() > 0);
+		$this->showTitleQuery->execute([$id]);
+		return ($this->showTitleQuery->rowCount() > 0);
+	}
+	
+	function showTitle($id) {
+		$this->showTitleQuery->execute([$id]);
+		return $this->showTitleQuery->fetch(PDO::FETCH_NUM)[0];
 	}
 	
 	function getMaxEpisode($showId) {
@@ -126,12 +132,12 @@ class DatabaseHandler {
 			WHERE `id` = ?';
 		$this->actorExistsQuery = $this->dbh->prepare($actorExists);
 		
-		$showExists = 'SELECT * FROM `shows`
-			WHERE `id` = ?';
-		$this->showExistsQuery = $this->dbh->prepare($showExists);
-		
 		$maxEpisode = 'SELECT `episodes` FROM `max_episodes`
 			WHERE `show_id` = ?';
 		$this->maxEpisodeQuery = $this->dbh->prepare($maxEpisode);
+		
+		$showTitle = 'SELECT `title` FROM `shows`
+			WHERE `id` = ?';
+		$this->showTitleQuery = $this->dbh->prepare($showTitle);
 	}
 }

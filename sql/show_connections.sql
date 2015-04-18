@@ -2,8 +2,8 @@
 # tag = {list}, e.g. (1520211, 1741256)
 # tag = {ep_threshold}, e.g. 20
 
-SELECT `shows2`.`title` AS `show1`,
-       `shows1`.`title` AS `show2`,
+SELECT `shows2`.`id` AS `show1`,
+       `shows1`.`id` AS `show2`,
        `actors` AS `common_actors`
 FROM (
     SELECT COUNT(`p`.`actor_id`) AS `actors`,

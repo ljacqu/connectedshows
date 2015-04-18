@@ -17,11 +17,14 @@ class DotWriter {
 	 * @var callable
 	 */
 	private $colorFn;
+	/** @var DatabaseHandler */
+	private $dbh;
 	
-	function __construct($filename, $penwidthFn, $colorFn) {
+	function __construct($filename, callable $penwidthFn, callable $colorFn, DatabaseHandler $dbh) {
 		$this->filename = $filename;
 		$this->penwidthFn = $penwidthFn;
 		$this->colorFn = $colorFn;
+		$this->dbh = $dbh;
 	}
 	
 	function createFile(Traversable $rows, $rand=false) {
@@ -29,8 +32,8 @@ class DotWriter {
 		$contents = "";
 		foreach ($rows as $connection) {
 			$contents .= "\n\t" . $this->createEntry(
-					[$connection['showid1'], $connection['show1']],
-					[$connection['showid2'], $connection['show2']],
+					$connection['show1'],
+					$connection['show2'],
 					$connection['common_actors']);
 		}
 		$contents = $this->createShowRegister($rand) . "\n" . $contents;
@@ -40,18 +43,18 @@ class DotWriter {
 	
 	/**
 	 * Generates the Dot line for one show connection
-	 * @param array $show1 [0 => show_id, 1 => show_name]
-	 * @param array $show2 [0 => show_id, 1 => show_name]
+	 * @param array $show1 The ID of the first show
+	 * @param array $show2 The ID of the second show
 	 * @param int $commonActors Number of actors the shows share
 	 * @return string The generated Dot line
 	 */
-	private function createEntry(array $show1, array $show2, $commonActors) {
+	private function createEntry($show1, $show2, $commonActors) {
 		$penwidthFn = $this->penwidthFn;
 		$colorFn    = $this->colorFn;
 		$showId = [$this->showToId($show1), $this->showToId($show2)];
 		$penwidth = $penwidthFn($commonActors);
 		return "{$showId[0]} -- {$showId[1]} [penwidth=$penwidth," 
-			. "color=\"" . $colorFn($penwidth, $show1[0], $show2[0]) . "\"]";
+			. "color=\"" . $colorFn($penwidth, $show1, $show2) . "\"]";
 	}
 	
 	private function saveToFile($contents) {
@@ -75,13 +78,13 @@ class DotWriter {
 	/**
 	 * Register the show as node in the graph; return an ID for the show
 	 *  that is valid for the DOT format (may not start with digit).
-	 * @param string[] $show [0=>id, 1=>name]
+	 * @param string[] $show The show ID
 	 * @return string Dot-conform ID
 	 */
-	private function showToId(array $show) {
-		$key = 'm' . $show[0];
+	private function showToId($show) {
+		$key = 'm' . $show;
 		if (!isset($this->showToId[$key])) {
-			$this->showToId[$key] = $show[1]; // TODO -----------------------------------------
+			$this->showToId[$key] = $this->dbh->showTitle($show);
 		}
 		return $key;
 	}

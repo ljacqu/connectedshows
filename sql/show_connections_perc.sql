@@ -7,11 +7,7 @@ Constraint: Valid SQL code. For instance:
 
 SELECT `p1`.`actor_id` AS `actor`,
  `p1`.`show_id`  AS `show1`,
-# `p1`.`episodes` AS `episodes1`,
-# `m1`.`episodes` AS `max1`,
  `p2`.`show_id`  AS `show2`,
-# `p2`.`episodes` AS `episodes2`,
-# `m2`.`episodes` AS `max2`
  `p1`.`episodes`/`m1`.`episodes` AS `rate1`,
  `p2`.`episodes`/`m2`.`episodes` AS `rate2`
 FROM `played_in` `p1`

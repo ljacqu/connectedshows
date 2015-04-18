@@ -187,8 +187,8 @@ class TestItem {
 	}
 	
 	function getMessage() {
-		return (empty($this->message) ? 'Yes' : $this->message)
-			. ($this->cssClass === "testgood" ? ' &#x2713;' : '');
+		return ($this->cssClass === "testgood" ? '&#x2713; ' : '&#x2718; ')
+		 . (empty($this->message) ? 'Yes' : $this->message);
 	}
 	
 	function setUndefined() {
