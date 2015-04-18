@@ -1,10 +1,6 @@
 <?php
 class DatabaseHandler {
 	
-	const DB_USER = 'root';
-	const DB_PASS = '';
-	const DB_NAME = 'movies';
-	
 	/** @var PDO */
 	private $dbh;
 	
@@ -22,8 +18,10 @@ class DatabaseHandler {
 	private $maxEpisodeQuery;
 	
 	function __construct() {
-		$dsn = 'mysql:dbname='.self::DB_NAME.';host=localhost';
-		$this->dbh = new PDO($dsn, self::DB_USER, self::DB_PASS);
+		global $config;
+		if (!isset($config)) throw new PDOException("Could not get config data!");
+		$dsn = 'mysql:dbname='.$config['db_name'].';host=localhost';
+		$this->dbh = new PDO($dsn, $config['db_user'], $config['db_pass']);
 		$this->dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 		$this->prepareQueries();
 	}
@@ -50,6 +48,10 @@ class DatabaseHandler {
 		   'SELECT `id`, `title`
 			FROM `shows`
 			ORDER BY `title`');
+	}
+	
+	function getTotalShows() {
+		return $this->dbh->query('SELECT COUNT(`id`) FROM `shows`')->fetch();
 	}
 	
 	function showExists($id) {

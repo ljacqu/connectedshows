@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 
+require 'config.php';
 require './inc/DatabaseHandler.php';
 require './inc/SqlHelper.php';
 require './inc/Template.php';
