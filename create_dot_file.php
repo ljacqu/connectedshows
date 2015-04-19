@@ -89,7 +89,7 @@ do {
 	$dot_writer->createFile($query);
 	
 	// Output success and some figures
-	$max_connections = max_connections($limited, $shows, $dbh);
+	$max_connections = max_connections($limited, count($shows), $dbh);
 	$result .= '<br>Successfully wrote to file ' . $form_file
 		. '<br>Found ' . $query->rowCount() . ' connections for '
 		. count($shows) . ' shows with limited=' . strval($limited)
@@ -151,11 +151,18 @@ function create_radios($name, array $options, array $text) {
 	return $result;
 }
 
-function max_connections($limited, array $shows, DatabaseHandler $dbh) {
+/**
+ * Computes the maximum possible number of connections between shows
+ * @param bool $limited If the connections are limited among the selected shows
+ * @param int $selected_shows The number of selected shows
+ * @param DatabaseHandler $dbh DatabaseHandler object
+ * @return int maximum possible number of connections
+ */
+function max_connections($limited, $selected_shows, DatabaseHandler $dbh) {
 	if ($limited) {
-		return count($shows) * (count($shows)-1) / 2;
+		return $selected_shows*($selected_shows-1)/2;
 	} else {
-		$total_shows = $dbh->getTotalShows();
-		return count($shows) * ($total_shows-1) / 2;
+		$total_shows = $dbh->getTotalShows() - $selected_shows;
+		return $selected_shows*($selected_shows-1)/2 + $selected_shows*$total_shows;
 	}
 }

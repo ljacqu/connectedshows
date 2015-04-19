@@ -2,26 +2,29 @@
 <html>
  <head>
     <meta charset="utf-8">
-    <title>Show Connections &mdash; Make Graph File</title>
+    <title>Show Connections &mdash; View Show Connections</title>
     <link rel="stylesheet" type="text/css" href="./html/style.css">
     <script type="text/javascript" src="./html/formtoggle.js"></script>
+    <script type="text/javascript">
+function redir() {
+    var checkboxes = document.getElementsByName("shows[]");
+    var totalboxes = checkboxes.length;
+    var qs = "";
+    for (var i = 0; i < totalboxes; ++i) {
+        if (checkboxes[i].checked) qs += "-" + checkboxes[i].value;
+    }
+    window.location.replace("?" + qs.substr(1));
+}
+    </script>
  </head>
  <body onload="checkallbox('all', 'shows[]')">
-    <div class="crumbs"><a href="index.php">Main</a> &raquo; View TV Show Connections</div>
+    <div class="crumbs"><a href="index.php">Main</a> &raquo; View Show Connections</div>
     <h1>View TV Show Connections</h1>
+    Find the common actors between selected TV shows.
     {message}
     <div class="error">{error}</div>
 
-    <form method="post">
-      File name: <input type="text" name="file" value="{form_file}">
-      <br>Only within selected shows: <input type="checkbox" name="limited"{checked_limited}>
-      <br>Episode threshold: <input type="text" name="threshold" value="{form_threshold}">
-      <br><span style="font-size: 0.8em">In order to consider an actor as connection, he must have played
-       in at least as many episodes as the threshold in either show.</span>
-      <br>
-      <br>Threshold type: 
-      <br>Threshold <var>t</var> must be &lt;= {radio_type}
-      <br>Unit {radio_unit}
+    <form method="get" onsubmit="redir(); return false;">
       <br><label for="all">All:</label> <input type="checkbox" id="all" name="all" onchange="toggleboxes(this, 'shows[]')">
       <br>{form_shows}
       <br><input type="submit" class="submit" value="Create graph">

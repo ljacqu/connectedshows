@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 require 'config.php';
+require './inc/functions.php';
 require './inc/DatabaseHandler.php';
 require './inc/Template.php';
 
@@ -23,7 +24,7 @@ do {
 	}
 	$total_shows = count($input_shows);
 	if ($total_shows < 2) {
-		$error = 'Need at least two valid shows!';
+		$error = 'Need at least two shows!';
 		break;
 	}
 	
@@ -47,7 +48,13 @@ do {
 	
 } while(0);
 
-Template::displayTemplate('connection', ['message' => $message, 'error' => $error]);
+$form_shows = make_shows_dropdown($dbh->getAllShows(), $input_shows);
+$tags = [
+	'form_shows' => $form_shows,
+	'message' => $message,
+	'error' => $error
+];
+Template::displayTemplate('connection', $tags);
 
 
 
