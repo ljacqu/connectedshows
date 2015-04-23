@@ -78,3 +78,24 @@ table.overview {
 .bar {
     border-top: 2px solid #000;
 }
+.roles {
+    border-collapse: collapse;
+}
+.roles td, .roles th {
+    border-style: solid;
+    border-width: 1px 0;
+    border-color: #000;
+    padding: 3px;
+}
+.roles th {
+    border: 1px solid #000;
+}
+td.episodes {
+    text-align: right;
+}
+td.right {
+    border-right: 1px solid #000;
+}
+td.left {
+    border-left: 1px solid #000;
+}

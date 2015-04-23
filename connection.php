@@ -40,7 +40,12 @@ do {
 	}
 	Actor::sortActors();
 	
-	$message = '<table class="roles">';
+	$message = '<table class="roles"><tr><th>Actor</th>';
+	foreach ($input_shows as $show) {
+		$message .= '<th colspan="2">' . $dbh->showTitle($show) . '</th>';
+	}
+	$message .= '</tr>';
+	Actor::$inputShows = $input_shows;
 	foreach (Actor::$register as $actor) {
 		$message .= $actor->getTableEntry();
 	}
@@ -64,6 +69,8 @@ class Actor {
 	public static $dbh;
 	/** @var Actor[] */
 	public static $register = [];
+	/** @var string[] */
+	public static $inputShows;
 
 	/** @var string */
 	private $id;
@@ -91,12 +98,22 @@ class Actor {
 		$this->id = $id;
 	}
 	function getTableEntry() {
-		$row = "\n<tr><td><a href=\"actor.php?{$this->id}\">"
+		$this->sortRoles();
+		$row = "\n<tr><td class=\"right left\"><a href=\"actor.php?{$this->id}\">"
 			. $this->getName() . "</a></td>";
 		foreach ($this->roles as $role) {
-			$row .= "<td>{$role->role}</td><td>{$role->episodes}</td>";
+			$row .= "<td>{$role->role}</td><td class=\"episodes right\">{$role->episodes}</td>";
 		}
 		return $row . "</tr>";
+	}
+	function sortRoles() {
+		usort($this->roles, function($a, $b) {
+			$aKey = array_search($a->show, self::$inputShows);
+			$bKey = array_search($b->show, self::$inputShows);
+			if (     $aKey < $bKey) return -1;
+			else if ($aKey > $bKey) return 1;
+			else return 0;
+		});
 	}
 	private function getName() {
 		$sql = self::$dbh->getDbh()->prepare('SELECT `name` FROM `actors`'
@@ -108,8 +125,8 @@ class Actor {
 		if (!isset($this->relevance)) {
 			$sum = 0;
 			foreach ($this->roles as $role) {
-				$index = pow($role->episodes, 1/3);
-				$sum += ($index > 10) ? 10 : $index;
+				$index = pow($role->episodes, 1/4);
+				$sum += ($index > 3 ? 3 : $index);
 			}
 			$this->relevance = $sum;
 		}

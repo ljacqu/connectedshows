@@ -1,9 +1,7 @@
-/*
-Tag: {list}
-Constraint: Valid SQL code. For instance:
- (`p1`.`episodes`/`m1`.`episodes`) > 0.3
- AND  (`p2`.`episodes`/`m2`.`episodes`) > 0.3
- */
+-- tag = {list}, e.g. (1520211, 1741256)
+-- tag {constraint}: Valid SQL code. For instance:
+-- (`p1`.`episodes`/`m1`.`episodes`) > 0.3
+-- AND  (`p2`.`episodes`/`m2`.`episodes`) > 0.3
 
 SELECT `p1`.`actor_id` AS `actor`,
  `p1`.`show_id`  AS `show1`,
