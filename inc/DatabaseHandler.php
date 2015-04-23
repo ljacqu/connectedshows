@@ -13,8 +13,6 @@ class DatabaseHandler {
 	/** @var PDOStatement */
 	private $actorExistsQuery;
 	/** @var PDOStatement */
-	private $maxEpisodeQuery;
-	/** @var PDOStatement */
 	private $showTitleQuery;
 	
 	function __construct() {
@@ -30,17 +28,18 @@ class DatabaseHandler {
 		return $this->dbh;
 	}
 	
-	function saveShowInfo($title, $show_id, array $cast) {
-		$result = $this->registerShow($show_id, $title);
-		if (!$result) {
-			throw new Exception('Could not save show! (See errors.)');
-		}
-		foreach ($cast as $actor) {
+	function saveShowInfo($title, $showId, array $actors) {
+		$this->dbh->beginTransaction();
+		$max = 0;
+		foreach ($actors as $actor) {
 			if (!$this->actorExists($actor[0])) {
 				$this->registerActor($actor[0], $actor[1]);
 			}
-			$this->registerRole($actor[0], $show_id, $actor[2], $actor[3]);
+			$this->registerRole($actor[0], $showId, $actor[2], $actor[3]);
+			if ($max < $actor[3]) $max = $actor[3];
 		}
+		$this->registerShow($showId, $title, $max);
+		$this->dbh->commit();
 	}
 	
 	function getAllShows() {
@@ -51,8 +50,7 @@ class DatabaseHandler {
 	}
 	
 	function getTotalShows() {
-		$result = $this->dbh->query('SELECT COUNT(`id`) FROM `shows`')->fetch();
-		return $result[0];
+		return $this->dbh->query('SELECT COUNT(1) FROM `shows`')->fetch()[0];
 	}
 	
 	function showExists($id) {
@@ -63,27 +61,6 @@ class DatabaseHandler {
 	function showTitle($id) {
 		$this->showTitleQuery->execute([$id]);
 		return $this->showTitleQuery->fetch(PDO::FETCH_NUM)[0];
-	}
-	
-	function getMaxEpisode($showId) {
-		$this->maxEpisodeQuery->execute([$showId]);
-		if ($this->maxEpisodeQuery->rowCount() === 1) {
-			return $this->maxEpisodeQuery->fetch(PDO::FETCH_NUM);
-		} else if ($this->showExists($showId)) {
-			$maxQuery = $this->dbh->query('SELECT MAX(`episodes`) FROM `played_in`
-				WHERE `show_id` = \''.$showId.'\';');
-			$maxValue = $maxQuery->fetch(PDO::FETCH_NUM);
-			
-			$insertMax = $this->dbh->exec('INSERT INTO `max_episodes` (`show_id`, `episodes`)
-					VALUES('.$showId.', '.$maxValue[0].')');
-			if ($insertMax != 1) {
-				throw new Exception('Failed inserting max episodes for show ' . $showId);
-			} else {
-				return $maxValue;
-			}
-		} else {
-			throw new Exception('Unknown show ' . $showId);
-		}
 	}
 	
 	function actorExists($id) {
@@ -107,8 +84,8 @@ class DatabaseHandler {
 		$this->registerActorQuery->execute([$id, $name]);
 	}
 	
-	private function registerShow($id, $title) {
-		return $this->registerShowQuery->execute([$id, $title]);
+	private function registerShow($id, $title, $maxEpisodes) {
+		return $this->registerShowQuery->execute([$id, $title, $maxEpisodes]);
 	}
 	
 	private function registerRole($actor_id, $show_id, $role, $episodes) {
@@ -120,21 +97,17 @@ class DatabaseHandler {
 			VALUES (?, ?)';
 		$this->registerActorQuery = $this->dbh->prepare($registerActor);
 		
-		$registerShow = 'INSERT INTO `shows` (`id`, `title`)
-			VALUES (?, ?)';
+		$registerShow = 'INSERT INTO `shows` (`id`, `title`, `episodes`)
+			VALUES (?, ?, ?)';
 		$this->registerShowQuery = $this->dbh->prepare($registerShow);
 		
 		$registerRole = 'INSERT INTO `played_in` (`actor_id`, `show_id`, `role`, `episodes`)
 			VALUES (?, ?, ?, ?)';
 		$this->registerRoleQuery = $this->dbh->prepare($registerRole);
 		
-		$actorExists = 'SELECT * FROM `actors`
+		$actorExists = 'SELECT 1 FROM `actors`
 			WHERE `id` = ?';
 		$this->actorExistsQuery = $this->dbh->prepare($actorExists);
-		
-		$maxEpisode = 'SELECT `episodes` FROM `max_episodes`
-			WHERE `show_id` = ?';
-		$this->maxEpisodeQuery = $this->dbh->prepare($maxEpisode);
 		
 		$showTitle = 'SELECT `title` FROM `shows`
 			WHERE `id` = ?';

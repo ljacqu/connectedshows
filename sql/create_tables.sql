@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2015 at 10:50 PM
+-- Generation Time: Apr 23, 2015 at 08:33 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `movies`
+-- Database: `showconnections`
 --
 
 -- --------------------------------------------------------
@@ -30,18 +30,6 @@ CREATE TABLE IF NOT EXISTS `actors` (
   `id` int(11) NOT NULL,
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `max_episodes`
---
-
-CREATE TABLE IF NOT EXISTS `max_episodes` (
-  `show_id` int(11) NOT NULL,
-  `episodes` int(11) NOT NULL,
-  UNIQUE KEY `movie_id` (`show_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -68,6 +56,7 @@ CREATE TABLE IF NOT EXISTS `played_in` (
 CREATE TABLE IF NOT EXISTS `shows` (
   `id` int(11) NOT NULL,
   `title` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
+  `episodes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
