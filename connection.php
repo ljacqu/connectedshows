@@ -5,7 +5,7 @@ require './inc/functions.php';
 require './inc/DatabaseHandler.php';
 require './inc/Template.php';
 
-$dbh = new DatabaseHandler;
+$dbh = new DatabaseHandler($config);
 $all_shows = [];
 foreach ($dbh->getAllShows() as $show) {
 	$all_shows[$show['id']] = $show['title'];

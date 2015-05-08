@@ -5,7 +5,7 @@ require './inc/Template.php';
 $pages = [
 	'create_dot_file' => 'View TV Show Connections',
 	'save_show_data' => 'Save data of a TV show',
-	'install' => 'Install &amp; Status Check'
+	'system_check' => 'System Check'
 ];
 
 $problem = false;
@@ -19,7 +19,7 @@ try {
 	else {
 		require './gen/config.php';
 		require './inc/DatabaseHandler.php';
-		$dbh = new DatabaseHandler;
+		$dbh = new DatabaseHandler($config);
 		$dbh->getTotalShows();
 	}
 } catch (PDOException $ex) {

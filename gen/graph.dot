@@ -1,62 +1,65 @@
 graph {
-	gclhelkp [label="The King of Queens"];
-	ajbondbj [label="Malcolm in the Middle"];
-	pnhebhaj [label="Gilmore Girls"];
-	fahgbdea [label="Scrubs"];
-	kaclnnaa [label="7th Heaven"];
-	bbalaaga [label="Arrested Development"];
-	piiebapa [label="Two and a Half Men"];
-	ekampcfo [label="Desperate Housewives"];
-	ogchgihp [label="House M.D."];
-	lenpllcg [label="How I Met Your Mother"];
-	nnjagccd [label="Charmed"];
-	ilpkgpeb [label="The War at Home"];
-	jmpaimgg [label="The Big Bang Theory"];
-	ldcacdkd [label="Breaking Bad"];
-	glhlhpfe [label="Parks and Recreation"];
-	fbbeemnd [label="My Wife and Kids"];
-	ndmhpojc [label="Community"];
-	dmeeijpn [label="Modern Family"];
-	akhickjn [label="Shameless"];
-	cnopcckc [label="Reba"];
-	agbfblla [label="Suburgatory"];
-	idlojomo [label="2 Broke Girls"];
+ node [target="_top"];
+ edge [target="_top"];
 
-	gclhelkp -- ajbondbj [penwidth=1,color="black"];
-	gclhelkp -- pnhebhaj [penwidth=1,color="black"];
-	ajbondbj -- pnhebhaj [penwidth=1,color="black"];
-	gclhelkp -- fahgbdea [penwidth=1,color="black"];
-	kaclnnaa -- bbalaaga [penwidth=1,color="black"];
-	gclhelkp -- piiebapa [penwidth=1,color="black"];
-	bbalaaga -- piiebapa [penwidth=1,color="black"];
-	kaclnnaa -- ekampcfo [penwidth=1,color="black"];
-	gclhelkp -- ekampcfo [penwidth=1,color="black"];
-	pnhebhaj -- ekampcfo [penwidth=1,color="black"];
-	fahgbdea -- ekampcfo [penwidth=1,color="black"];
-	piiebapa -- ogchgihp [penwidth=1,color="black"];
-	kaclnnaa -- lenpllcg [penwidth=1,color="black"];
-	nnjagccd -- lenpllcg [penwidth=1,color="black"];
-	fahgbdea -- lenpllcg [penwidth=1,color="black"];
-	ekampcfo -- lenpllcg [penwidth=2.52,color="black"];
-	ogchgihp -- lenpllcg [penwidth=1.59,color="black"];
-	ajbondbj -- ilpkgpeb [penwidth=1,color="black"];
-	ekampcfo -- ilpkgpeb [penwidth=1,color="black"];
-	nnjagccd -- jmpaimgg [penwidth=1,color="black"];
-	fahgbdea -- jmpaimgg [penwidth=1,color="black"];
-	ajbondbj -- ldcacdkd [penwidth=1,color="black"];
-	pnhebhaj -- ldcacdkd [penwidth=1,color="black"];
-	lenpllcg -- ldcacdkd [penwidth=1,color="black"];
-	kaclnnaa -- glhlhpfe [penwidth=1,color="black"];
-	fbbeemnd -- glhlhpfe [penwidth=1,color="black"];
-	bbalaaga -- glhlhpfe [penwidth=2.08,color="black"];
-	bbalaaga -- ndmhpojc [penwidth=1,color="black"];
-	ldcacdkd -- ndmhpojc [penwidth=1,color="black"];
-	fahgbdea -- dmeeijpn [penwidth=1,color="black"];
-	ajbondbj -- akhickjn [penwidth=1,color="black"];
-	pnhebhaj -- akhickjn [penwidth=1,color="black"];
-	cnopcckc -- akhickjn [penwidth=1,color="black"];
-	piiebapa -- akhickjn [penwidth=1,color="black"];
-	ekampcfo -- akhickjn [penwidth=1,color="black"];
-	akhickjn -- agbfblla [penwidth=1,color="black"];
-	fahgbdea -- idlojomo [penwidth=1,color="black"];
+	m212671 [label="Malcolm in the Middle",href="../show.php?212671"];
+	m165581 [label="The King of Queens",href="../show.php?165581"];
+	m238784 [label="Gilmore Girls",href="../show.php?238784"];
+	m285403 [label="Scrubs",href="../show.php?285403"];
+	m367279 [label="Arrested Development",href="../show.php?367279"];
+	m115083 [label="7th Heaven",href="../show.php?115083"];
+	m369179 [label="Two and a Half Men",href="../show.php?369179"];
+	m410975 [label="Desperate Housewives",href="../show.php?410975"];
+	m412142 [label="House M.D.",href="../show.php?412142"];
+	m460649 [label="How I Met Your Mother",href="../show.php?460649"];
+	m158552 [label="Charmed",href="../show.php?158552"];
+	m460692 [label="The War at Home",href="../show.php?460692"];
+	m898266 [label="The Big Bang Theory",href="../show.php?898266"];
+	m903747 [label="Breaking Bad",href="../show.php?903747"];
+	m1266020 [label="Parks and Recreation",href="../show.php?1266020"];
+	m273855 [label="My Wife and Kids",href="../show.php?273855"];
+	m1439629 [label="Community",href="../show.php?1439629"];
+	m1442437 [label="Modern Family",href="../show.php?1442437"];
+	m1586680 [label="Shameless",href="../show.php?1586680"];
+	m284722 [label="Reba",href="../show.php?284722"];
+	m1741256 [label="Suburgatory",href="../show.php?1741256"];
+	m1845307 [label="2 Broke Girls",href="../show.php?1845307"];
+
+	m212671 -- m165581 [penwidth=1,color="black",href="../connection.php?212671-165581"]
+	m238784 -- m165581 [penwidth=1,color="black",href="../connection.php?238784-165581"]
+	m238784 -- m212671 [penwidth=1,color="black",href="../connection.php?238784-212671"]
+	m285403 -- m165581 [penwidth=1,color="black",href="../connection.php?285403-165581"]
+	m367279 -- m115083 [penwidth=1,color="black",href="../connection.php?367279-115083"]
+	m369179 -- m165581 [penwidth=1,color="black",href="../connection.php?369179-165581"]
+	m369179 -- m367279 [penwidth=1,color="black",href="../connection.php?369179-367279"]
+	m410975 -- m115083 [penwidth=1,color="black",href="../connection.php?410975-115083"]
+	m410975 -- m165581 [penwidth=1,color="black",href="../connection.php?410975-165581"]
+	m410975 -- m238784 [penwidth=1,color="black",href="../connection.php?410975-238784"]
+	m410975 -- m285403 [penwidth=1,color="black",href="../connection.php?410975-285403"]
+	m412142 -- m369179 [penwidth=1,color="black",href="../connection.php?412142-369179"]
+	m460649 -- m115083 [penwidth=1,color="black",href="../connection.php?460649-115083"]
+	m460649 -- m158552 [penwidth=1,color="black",href="../connection.php?460649-158552"]
+	m460649 -- m285403 [penwidth=1,color="black",href="../connection.php?460649-285403"]
+	m460649 -- m410975 [penwidth=2.52,color="black",href="../connection.php?460649-410975"]
+	m460649 -- m412142 [penwidth=1.59,color="black",href="../connection.php?460649-412142"]
+	m460692 -- m212671 [penwidth=1,color="black",href="../connection.php?460692-212671"]
+	m460692 -- m410975 [penwidth=1,color="black",href="../connection.php?460692-410975"]
+	m898266 -- m158552 [penwidth=1,color="black",href="../connection.php?898266-158552"]
+	m898266 -- m285403 [penwidth=1,color="black",href="../connection.php?898266-285403"]
+	m903747 -- m212671 [penwidth=1,color="black",href="../connection.php?903747-212671"]
+	m903747 -- m238784 [penwidth=1,color="black",href="../connection.php?903747-238784"]
+	m903747 -- m460649 [penwidth=1,color="black",href="../connection.php?903747-460649"]
+	m1266020 -- m115083 [penwidth=1,color="black",href="../connection.php?1266020-115083"]
+	m1266020 -- m273855 [penwidth=1,color="black",href="../connection.php?1266020-273855"]
+	m1266020 -- m367279 [penwidth=2.08,color="black",href="../connection.php?1266020-367279"]
+	m1439629 -- m367279 [penwidth=1,color="black",href="../connection.php?1439629-367279"]
+	m1439629 -- m903747 [penwidth=1,color="black",href="../connection.php?1439629-903747"]
+	m1442437 -- m285403 [penwidth=1,color="black",href="../connection.php?1442437-285403"]
+	m1586680 -- m212671 [penwidth=1,color="black",href="../connection.php?1586680-212671"]
+	m1586680 -- m238784 [penwidth=1,color="black",href="../connection.php?1586680-238784"]
+	m1586680 -- m284722 [penwidth=1,color="black",href="../connection.php?1586680-284722"]
+	m1586680 -- m369179 [penwidth=1,color="black",href="../connection.php?1586680-369179"]
+	m1586680 -- m410975 [penwidth=1,color="black",href="../connection.php?1586680-410975"]
+	m1741256 -- m1586680 [penwidth=1,color="black",href="../connection.php?1741256-1586680"]
+	m1845307 -- m285403 [penwidth=1,color="black",href="../connection.php?1845307-285403"]
 }

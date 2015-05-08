@@ -7,7 +7,7 @@ require './inc/SqlHelper.php';
 require './inc/Template.php';
 require './inc/functions.php';
 
-$dbh = new DatabaseHandler;
+$dbh = new DatabaseHandler($config);
 $form_file = '';
 $shows = [];
 $form_error = '';

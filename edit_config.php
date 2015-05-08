@@ -8,7 +8,7 @@ $config_input = [
  'db_user' => 'root',
  'db_pass' => '',
  'graph_command' => 'dot',
- 'format_commands' => [
+ 'commands' => [
 	 'svg' => 'dot -Tsvg {file} -o {output}',
 	 'png' => 'dot -Tpng {file} -o {output}'
  ],
@@ -23,24 +23,23 @@ else {
 	if (file_exists('./gen/config.php')) {
 		include './gen/config.php';
 		foreach ($config_input as $key => $value) {
-			if (isset($config[$key]) && is_scalar($config[$key]) && $key !== 'format_commands') {
+			if (isset($config[$key]) && is_scalar($config[$key]) && $key !== 'commands') {
 				$config_input[$key] = $config[$key];
 			}
 		}
-		$config_input['format_commands'] = isset($config['format_commands'])
-				? $config['format_commands'] : $config_input['format_commands'];
+		$config_input['commands'] = isset($config['commands'])
+				? $config['commands'] : $config_input['commands'];
 	}
 	if (isset($_POST['update'])) {
 		$write_to_file = true;
 		foreach ($config_input as $key => $value) {
-			if ($key === 'format_commands') continue;
+			if ($key === 'commands') continue;
 			$config_input[$key] = filter_input(INPUT_POST, $key, FILTER_DEFAULT, FILTER_REQUIRE_SCALAR)
 						?: $config_input[$key];
 		}
-		$format_names = filter_input(INPUT_POST, 'format_names', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY); 
-		$format_cmds = filter_input(INPUT_POST, 'format_commands', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-		$config_input['format_commands'] = construct_format_cmd_array($format_names, $format_cmds)
-					?: $config_input['format_commands'];
+		$commands = filter_input(INPUT_POST, 'commands', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+		$config_input['commands'] = check_format_commands($commands)
+					?: $config_input['commands'];
 	}	
 }
 
@@ -58,16 +57,15 @@ if ($write_to_file) {
 }
 
 $format_rows = "";
-$config_input['format_commands'][""] = "";
-foreach ($config_input['format_commands'] as $type => $command) {
-	$format_rows .= "\n<tr><td><input type=\"text\" name=\"format_names[]\" "
-		. "value=\"" . htmlspecialchars($type) . "\"></td>"
-		. "<td><input type=\"text\" name=\"format_commands[]\" "
-		. "value=\"" . htmlspecialchars($command) . "\"></td></tr>";
+$tpl_format_row = Template::getTemplateText('edit_config_format_row');
+$id = 0;
+foreach ($config_input['commands'] as $type => $command) {
+	$format_tags = ['type' => htmlspecialchars($type), 'command' => htmlspecialchars($command), 'id' => ++$id];
+	$format_rows .= Template::prepareTemplate($tpl_format_row, $format_tags);
 }
 $tags = ['format_rows' => $format_rows];
 foreach ($config_input as $key => $value) {
-	if ($key !== 'format_commands') {
+	if ($key !== 'commands') {
 		$tags[$key] = htmlspecialchars($value);
 	}
 }
@@ -77,20 +75,15 @@ Template::displayTemplate('edit_config', $tags);
 
 
 
-function construct_format_cmd_array($format_names, $format_cmds) {
-	if (!$format_names || !$format_cmds || count($format_names) !== count($format_cmds)) {
-		return false;
-	}
+function check_format_commands($format_cmds) {
 	$result = [];
-	reset($format_cmds);
-	foreach ($format_names as $name) {
-		if (empty($name) && empty(current($format_cmds))) {
+	foreach ($format_cmds as $command) {
+		if (empty($command) || !isset($command['name']) || !isset($command['command'])) {
 			continue;
-		} else if (!preg_match('/^\\w+$/', $name) || isset($result[$name])) {
+		} else if (!preg_match('~^\\w+$~', $command['name'])) {
 			return false;
 		}
-		$result[$name] = current($format_cmds);
-		next($format_cmds);
+		$result[$command['name']] = $command['command'];
 	}
 	return $result;
 }

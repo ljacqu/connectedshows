@@ -54,10 +54,13 @@ $test_result[3] = new TestItem("Database login");
 $test_result[4] = new TestItem("Retrieve database info");
 $test_key = 0;
 try {
-	$dbh = new DatabaseHandler;
+	if ($test_result[2]->cssClass !== 'testgood') {
+		throw new PDOException("noconfig", -12345);
+	}
+	$dbh = new DatabaseHandler($config);
 	$test_result[3]->message = 'Can login';
 	$total = $dbh->getTotalShows();
-	$test_result[4]->message = 'Could get shows. (Found ' . $total . ' entries)';
+	$test_result[4]->message = 'Could get shows. (Found ' . $total . ' shows)';
 } catch (PDOException $ex) {
 	$test_key = empty($test_result[3]->message) ? 3 : 4;
 	register_db_error($test_result[$test_key], $ex);
@@ -161,6 +164,8 @@ function register_db_error(TestItem $test_item, PDOException $ex) {
 	global $config;
 	
 	switch ($ex->getCode()) {
+		case -12345:
+			$test_item->setUndefined(); return;
 		case 1049:
 			$test_item->setError("Could not find database <b>" 
 					. htmlspecialchars($config['db_name']) . "</b>. Please create it or change config.php");

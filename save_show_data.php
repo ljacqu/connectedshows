@@ -74,7 +74,7 @@ do {
 	
 	// Check if show exists
 	require './inc/DatabaseHandler.php';
-	$dbh = new DatabaseHandler;
+	$dbh = new DatabaseHandler($config);
 	if ($dbh->showExists($show_id)) {
 		if (isset($_POST['reset'])) {
 			$dbh->deleteShow($show_id);

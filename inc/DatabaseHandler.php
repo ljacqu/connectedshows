@@ -15,9 +15,8 @@ class DatabaseHandler {
 	/** @var PDOStatement */
 	private $showTitleQuery;
 	
-	function __construct() {
-		global $config;
-		if (!isset($config)) throw new PDOException("Could not get config data!");
+	function __construct(array $config) {
+		if (empty($config)) throw new PDOException("Could not get config data!");
 		$dsn = 'mysql:dbname='.$config['db_name'].';host=localhost';
 		$this->dbh = new PDO($dsn, $config['db_user'], $config['db_pass']);
 		$this->dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
