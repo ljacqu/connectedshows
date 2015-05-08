@@ -4,8 +4,8 @@
 -- OR  (`p2`.`episodes`/`s2`.`episodes`) > 0.3
 
 SELECT 
-	`s1`.`id`    AS `show1`,
-	`s2`.`id`    AS `show2`,
+	`p1`.`show_id` AS `show1`,
+	`p2`.`show_id` AS `show2`,
 	COUNT(`p1`.`actor_id`) AS `common_actors`
 FROM `played_in` `p1`
 INNER JOIN `played_in` `p2`

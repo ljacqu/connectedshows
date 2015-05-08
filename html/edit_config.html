@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+ <head>
+    <meta charset="utf-8">
+    <title>Show Connections &mdash; Edit Configuration</title>
+    <link rel="stylesheet" type="text/css" href="./html/style.css">
+ </head>
+ <body>
+    <div class="crumbs"><a href="index.php">Main</a> &raquo; Edit Configuration</div>
+    <form method="post">
+       <h1>Edit Configuration</h1>
+       {message}
+       <table>
+           <tr><th colspan="2">Database Details</th></tr>
+           <tr><td>DB name:</td><td><input type="text" name="db_name" value="{db_name}"></td></tr>
+           <tr><td>User:</td><td><input type="text" name="db_user" value="{db_user}"></td></tr>
+           <tr><td>Pass:</td><td><input type="text" name="db_pass" value="{db_pass}"></td></tr>
+           <tr><th colspan="2">Graph command</th></tr>
+           <tr><td>General command:</td><td><input type="text" name="graph_command" value="{graph_command}">
+           <tr><th colspan="2">Image formats</th></tr>
+           {format_rows}
+           <tr><td colspan="2"><input type="submit" name="update" value="Save changes" class="submit"></td></tr>
+           <tr><td colspan="2" style="text-align: right">
+                      <input type="submit" name="default" class="submit" value="Reset to default values">
+               </td></tr>
+       </table>
+    </form>
+ </body>
+</html>

@@ -1,8 +1,6 @@
 <?php
 error_reporting(E_ALL);
-require 'config.php';
 require './inc/Template.php';
-require './inc/DatabaseHandler.php';
 
 $pages = [
 	'create_dot_file' => 'View TV Show Connections',
@@ -12,9 +10,15 @@ $pages = [
 
 $problem = false;
 try {
-	if (!function_exists('curl_init') || !function_exists('exec')) {
+	if (!function_exists('curl_init')
+		|| !function_exists('exec')
+		|| !file_exists('./gen/config.php'))
+	{
 		$problem = true;
-	} else {
+	}
+	else {
+		require './gen/config.php';
+		require './inc/DatabaseHandler.php';
 		$dbh = new DatabaseHandler;
 		$dbh->getTotalShows();
 	}

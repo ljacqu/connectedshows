@@ -9,7 +9,8 @@ SELECT
 FROM `played_in` `p`
 INNER JOIN `played_in` `q`
  ON `p`.`actor_id` = `q`.`actor_id` 
- AND `p`.`show_id` <> `q`.`show_id`
+ AND `p`.`show_id` < `q`.`show_id`
 WHERE `p`.`show_id` IN {list}
+ OR   `q`.`show_id` IN {list}
  AND ({constraint})
 GROUP BY `show1`, `show2`

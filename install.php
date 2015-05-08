@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
 
-require 'config.php';
 require './inc/DatabaseHandler.php';
 require './inc/Template.php';
 
@@ -29,22 +28,41 @@ if (empty($missing_dir)) {
 }
 
 
+// =================
+// Test for config file
+// =================
+unset($config);
+$test_result[2] = new TestItem("./gen/config.php exists");
+$config_ok = false;
+if (file_exists('./gen/config.php')) {
+	include './gen/config.php';
+	if (!isset($config) || !is_array($config)) {
+		$test_result[2]->setError("File exists but could not find config data."
+			. " Please reset the config <a href=\"edit_config.php\">here</a>.");
+	}
+}
+else {
+	$test_result[2]->setError("File ./gen/config.php does not exist! Please run "
+		. " the <a href=\"edit_config.php\">config module</a>.");
+}
+
+
 // ==================
 // Test database
 // ==================
-$test_result[2] = new TestItem("Database login");
-$test_result[3] = new TestItem("Retrieve database info");
+$test_result[3] = new TestItem("Database login");
+$test_result[4] = new TestItem("Retrieve database info");
 $test_key = 0;
 try {
 	$dbh = new DatabaseHandler;
-	$test_result[2]->message = 'Can login';
+	$test_result[3]->message = 'Can login';
 	$total = $dbh->getTotalShows();
-	$test_result[3]->message = 'Could get shows. (Found ' . $total[0] . ' entries)';
+	$test_result[4]->message = 'Could get shows. (Found ' . $total . ' entries)';
 } catch (PDOException $ex) {
-	$test_key = empty($test_result[2]->message) ? 2 : 3;
+	$test_key = empty($test_result[3]->message) ? 3 : 4;
 	register_db_error($test_result[$test_key], $ex);
-	if ($test_key == 2) $test_result[3]->setUndefined();
-	else $test_result[3]->message .= '<br>&raquo; <a href="?maketables">Create tables</a>';
+	if ($test_key == 3) $test_result[4]->setUndefined();
+	else $test_result[4]->message .= '<br>&raquo; <a href="?maketables">Create tables</a>';
 }
 
 
@@ -53,7 +71,7 @@ try {
 // ==================
 $message = '';
 if (isset($_GET['maketables'])) {
-	if ($test_key == 2) {
+	if ($test_key == 3) {
 		$message = '<span class="error">Error! Cannot run database installation'
 			. ' because the login/database details are not correct.';
 	} else {
@@ -71,21 +89,23 @@ if (isset($_GET['maketables'])) {
 // ==================
 // Test exec dot
 // ==================
-$test_result[4] = new TestItem("<code>exec()</code> is enabled");
-$test_result[5] = new TestItem("Can use <code>dot</code> command");
+$test_result[5] = new TestItem("<code>exec()</code> is enabled");
+$test_result[6] = new TestItem("Can use <code>dot</code> command");
 if (!function_exists('exec')) {
-	$test_result[4]->setError("Function is disabled!");
-	$test_result[5]->setUndefined();
+	$test_result[5]->setError("Function is disabled!");
+	$test_result[6]->setUndefined();
+} else if (!isset($config['graph_command'])) {
+	$test_result[6]->setError("Could not find the config data to run command!");
 } else {
 	try {
 		exec($config['graph_command'] . ' -?', $output, $code);
 		if ($code !== 0) {
-			$test_result[5]->setError("Command <code>" . htmlspecialchars($config['graph_command'])
+			$test_result[6]->setError("Command <code>" . htmlspecialchars($config['graph_command'])
 				. " -?</code> returned code " . $code . "; please ensure that "
 				. "the dot command is configured correctly in config.php");
 		}
 	} catch (Exception $ex) {
-		$test_result[5]->setError("Encountered exception " . $ex->getMessage());
+		$test_result[6]->setError("Encountered exception " . $ex->getMessage());
 	}
 }
 
@@ -94,12 +114,12 @@ if (!function_exists('exec')) {
 // ==================
 // Test cURL
 // ==================
-$test_result[6] = new TestItem("cURL extension is loaded");
-$test_result[7] = new TestItem("Can connect to IMDb.com");
+$test_result[7] = new TestItem("cURL extension is loaded");
+$test_result[8] = new TestItem("Can connect to IMDb.com");
 if (!function_exists('curl_init')) {
-	$test_result[6]->setError("cURL is not loaded! Please add the extension to PHP."
+	$test_result[7]->setError("cURL is not loaded! Please add the extension to PHP."
 		. "<br><small>You can still use this script but you cannot save any new show data.</small>");
-	$test_result[7]->setUndefined();
+	$test_result[8]->setUndefined();
 } else {
 	try {
 		$ch = curl_init();
@@ -110,14 +130,14 @@ if (!function_exists('curl_init')) {
 		curl_exec($ch);
 		$info = curl_getinfo($ch);
 		if ($info['http_code'] !== 200) {
-			$test_result[7]->setError("Encountered HTTP code " . $info['http_code']
+			$test_result[8]->setError("Encountered HTTP code " . $info['http_code']
 				. " instead of expected 200! (Bad PHP setting? No internet connection? IMDb down?)"
 				. "<br><small>You can still use this script but you cannot save any new show data.</small>");
 		}
 		curl_close($ch);
 	}
 	catch (Exception $ex) {
-		$test_result[7]->setError("Encountered unexpected exception: <br>"
+		$test_result[8]->setError("Encountered unexpected exception: <br>"
 			. $ex->getMessage());
 	}
 }
@@ -128,7 +148,7 @@ if (!function_exists('curl_init')) {
 // ------------------
 $table = '<table class="overview">';
 foreach ($test_result as $key => $test) {
-	$bar = ($key%2 === 0 && $key !== 0) ? ' class="bar"' : '';
+	$bar = ($key%2 === 1 && $key > 1) ? ' class="bar"' : '';
 	$table .= "\n <tr$bar><td>{$test->testName}</td>"
 		. "<td class=\"{$test->cssClass}\">" . $test->getMessage() . '</td></tr>';
 }

@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL);
-require 'config.php';
+require './gen/config.php';
 require './inc/functions.php';
 require './inc/Template.php';
 
