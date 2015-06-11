@@ -22,8 +22,8 @@ class SqlHelper {
 	}
 	
 	private static function connPercentualConstraint($threshold, $type) {
-		$rate1 = '(`p1`.`episodes`/`m1`.`episodes`)*100';
-		$rate2 = '(`p2`.`episodes`/`m2`.`episodes`)*100';
+		$rate1 = '(`p1`.`episodes`/`s1`.`episodes`)*100';
+		$rate2 = '(`p2`.`episodes`/`s2`.`episodes`)*100';
 		if ($type['sum']) {
 			return "$rate1 + $rate2 >= $threshold";
 		} else {
