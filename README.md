@@ -32,18 +32,3 @@ between two TV shows, e.g. by setting a minimum threshold of episodes the actor
 has had to play in. Otherwise, actors with trivial one-episode background roles 
 pretty much connect every show with _all_ the others, creating a huge, unusable
 graph.
-
-
-Todo
-----
-
-- Create shows.php page
-- config base URL for SVG
-- use config commands for different formats
-- save config for specific graphs
-- connections.php: put shows to top that have a connection with the selected ones
-- custom linewidth/color functions? (+ predefined examples)
-- export function? (for graphs & navigable pages)
-- support movies & similar?
- + or: ensure that entering movies is detected & stop
-- DB integrity tests
