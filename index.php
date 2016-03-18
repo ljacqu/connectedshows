@@ -2,12 +2,12 @@
 require './inc/header.php';
 
 /**
- * @var string[] the available pages
+ * the available pages
  */
 $pages = [
-  'create_dot_file' => 'View TV Show Connections',
-  'save_show_data' => 'Save data of a TV show',
-  'system_check' => 'System Check'
+  page('create_dot_file', 'View TV Show Connections'),
+  page('save_show_data', 'Save data of a TV show'),
+  page('system_check', 'System Check')
 ];
 
 // -------
@@ -20,12 +20,7 @@ if (!$has_problem) {
   $has_problem = doesDatabaseHaveProblem($config);
 }
 
-$page_list = '';
-foreach ($pages as $file => $title) {
-  $page_list .= "\n <li><a href=\"$file.php\">$title</a>";
-}
-
-Template::displayTemplate("home", ['page_list' => $page_list, 'has_problem' => $has_problem]);
+Template::displayTemplate("home", ['pages' => $pages, 'has_problem' => $has_problem]);
 
 
 function doesSystemHaveProblem() {
@@ -40,4 +35,8 @@ function doesDatabaseHaveProblem($config) {
   } catch (PDOException $ex) {
     return true;
   }
+}
+
+function page($file, $title) {
+  return ['file' => $file, 'title' => $title];
 }

@@ -22,9 +22,30 @@ class Template {
 
   static function prepareTemplate($template, array $tags) {
     foreach ($tags as $name => $value) {
-      $innerBracket = $value ? '\\2' : '';
-      $template = preg_replace("~(\\[{$name}](.*?)\\[/{$name}])~s", $innerBracket, $template);
-      $template = str_replace("{{$name}}", $value, $template);
+      $template = self::handleConditionalTag($template, $name, $value);
+      $template = is_array($value)
+        ? self::handleRepetitionTag($template, $name, $value)
+        : str_replace("{{$name}}", $value, $template);
+    }
+    return $template;
+  }
+
+  private static function handleConditionalTag($template, $tagName, $value) {
+    if (strpos($template, "[$tagName]") !== false) {
+      $innerReplacement = $value ? '\\2' : '';
+      return preg_replace("~(\\[{$tagName}](.*?)\\[/{$tagName}])~s", $innerReplacement, $template);
+    }
+    return $template;
+  }
+
+  private static function handleRepetitionTag($template, $tagName, array $value) {
+    if (strpos($template, "[#$tagName]") !== false) {
+      preg_match("~\\[#$tagName](.*?)\\[/#$tagName]~s", $template, $matches);
+      $innerText = $matches[1];
+      $replacements = array_map(function ($values) use ($innerText) {
+        return self::prepareTemplate($innerText, $values);
+      }, $value);
+      return preg_replace("~(\\[#$tagName].*?\\[/#$tagName])~s", implode("\n", $replacements), $template);
     }
     return $template;
   }
