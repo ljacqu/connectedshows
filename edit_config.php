@@ -1,9 +1,8 @@
 <?php
-error_reporting(E_ALL);
-require './inc/Template.php';
+require './inc/header.php';
 
 // Default values
-$config_input = [
+$default_config = [
   'db_name' => 'showconnections',
   'db_user' => 'root',
   'db_pass' => '',
@@ -16,30 +15,28 @@ $config_input = [
 
 $write_to_file = false;
 
+$config = [];
 if (isset($_POST['default'])) {
+  $config = $default_config;
   $write_to_file = true;
 } else {
   if (file_exists('./gen/config.php')) {
-    include './gen/config.php';
-    foreach ($config_input as $key => $value) {
-      if (isset($config[$key]) && is_scalar($config[$key]) && $key !== 'commands') {
-        $config_input[$key] = $config[$key];
-      }
-    }
-    $config_input['commands'] = isset($config['commands']) ? $config['commands'] :
-      $config_input['commands'];
+    // Load $config from file
+    require './gen/config.php';
+    $config = merge_default_into_current_config($config, $default_config);
   }
+
   if (isset($_POST['update'])) {
     $write_to_file = true;
-    foreach ($config_input as $key => $value) {
-      if ($key === 'commands')
-        continue;
-      $config_input[$key] = filter_input(INPUT_POST, $key, FILTER_DEFAULT, FILTER_REQUIRE_SCALAR)
-        ? : $config_input[$key];
+    foreach ($default_config as $key => $value) {
+      if ($key !== 'commands') {
+        $config[$key] = Utils::getScalarInput(INPUT_POST, $key, $value);
+      }
     }
-    $commands = filter_input(INPUT_POST, 'commands', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-    $config_input['commands'] = check_format_commands($commands)
-      ? : $config_input['commands'];
+    $commands = check_format_commands(Utils::getArrayInput(INPUT_POST, 'commands', null));
+    if ($commands !== false) {
+      $config['commands'] = $commands;
+    }
   }
 }
 
@@ -50,42 +47,57 @@ if ($write_to_file) {
     $message = 'Error! Could not write to the config file (./gen/config.php).'
       . ' Please ensure that ./gen/ exists and that the file is writable.';
   } else {
-    fwrite($fh, '<?php $config = ' . var_export($config_input, true) . ';');
+    fwrite($fh, '<?php $config = ' . var_export($config, true) . ';');
     fclose($fh);
     $message = 'Saved the changes!';
   }
 }
 
-$format_rows = "";
-$tpl_format_row = Template::getTemplateText('edit_config_format_row');
 $id = 0;
-foreach ($config_input['commands'] as $type => $command) {
-  $format_tags = [
-    'type' => htmlspecialchars($type),
+$commands_for_html = [];
+foreach ($config['commands'] as $name => $command) {
+  $commands_for_html[] = [
+    'name' => htmlspecialchars($name),
     'command' => htmlspecialchars($command),
-    'id' => ++$id
+    'id' => $id++
   ];
-  $format_rows .= Template::prepareTemplate($tpl_format_row, $format_tags);
 }
-$tags = ['format_rows' => $format_rows];
-foreach ($config_input as $key => $value) {
+$tags = ['commands' => $commands_for_html, 'message' => $message];
+
+foreach ($config as $key => $value) {
   if ($key !== 'commands') {
     $tags[$key] = htmlspecialchars($value);
   }
 }
-$tags['message'] = $message;
 
 Template::displayTemplate('edit_config', $tags);
 
 function check_format_commands($format_cmds) {
+  if (!isset($format_cmds) || !is_array($format_cmds)) {
+    return false;
+  }
+
   $result = [];
   foreach ($format_cmds as $command) {
     if (empty($command) || !isset($command['name']) || !isset($command['command'])) {
       continue;
-    } else if (!preg_match('~^\\w+$~', $command['name'])) {
+    } else if (!preg_match('~^[a-z0-9_-]+$~i', $command['name'])) {
       return false;
     }
     $result[$command['name']] = $command['command'];
   }
   return $result;
+}
+
+function merge_default_into_current_config(array $config, array $default_config) {
+  foreach ($default_config as $key => $value) {
+    if ($key !== 'commands' && (!isset($config[$key]) || !is_scalar($config[$key]))) {
+
+      $config[$key] = $value;
+    }
+  }
+  if (!isset($config['commands']) || !is_array($config['commands'])) {
+    $config['commands'] = $default_config['commands'];
+  }
+  return $config;
 }

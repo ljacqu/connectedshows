@@ -7,6 +7,7 @@ require './inc/header.php';
 $pages = [
   page('create_dot_file', 'View TV Show Connections'),
   page('save_show_data', 'Save data of a TV show'),
+  page('edit_config', 'Edit config'),
   page('system_check', 'System Check')
 ];
 
