@@ -12,29 +12,40 @@ $has_actor_data = false;
 $roles = [];
 $message = '';
 $actor_name = '';
+$similar_actors = [];
 
-if ($actor_id && preg_match('/^\\d+$/', $actor_id)) {
+do {
+  if (!$actor_id || !preg_match('/^\\d+$/', $actor_id)) {
+    // TODO: Need a better entry page
+    $message = 'No actor ID specified.';
+    break;
+  }
+
   $dbh = new DatabaseHandler($config);
 
   $get_name_query = $dbh->getDbh()->prepare('SELECT name FROM actors WHERE id = ?');
   $get_name_query->execute([$actor_id]);
   $actor_data = $get_name_query->fetch(PDO::FETCH_ASSOC);
 
-  if ($actor_data) {
-    $actor_name = $actor_data['name'];
-
-    $sql_data = $dbh->getDbh()->query(
-      str_replace('{actor_id}', $actor_id,
-        file_get_contents('./inc/find_shows_of_actor.sql')));
-    $roles = $sql_data->fetchAll(PDO::FETCH_ASSOC);
-    $has_actor_data = true;
-  } else {
+  if (!$actor_data) {
     $error = 'Actor ID is unknown.';
+    break;
   }
-} else {
-  // TODO: Need a better entry page
-  $message = 'No actor ID specified.';
-}
+
+  $actor_name = $actor_data['name'];
+
+  $sql_roles = $dbh->getDbh()->query(
+    str_replace('{actor_id}', $actor_id,
+      file_get_contents('./inc/find_shows_of_actor.sql')));
+  $roles = $sql_roles->fetchAll(PDO::FETCH_ASSOC);
+
+  $sql_actors = $dbh->getDbh()->query(
+    str_replace('{actor_id}', $actor_id,
+      file_get_contents('./inc/find_most_common_actors.sql')));
+  $similar_actors = $sql_actors->fetchAll(PDO::FETCH_ASSOC);
+
+  $has_actor_data = true;
+} while (0);
 
 $tags = [
   'message' => $message,
@@ -42,7 +53,8 @@ $tags = [
   'roles' => $roles,
   'has_actor_data' => $has_actor_data,
   'actor_name' => $actor_name,
-  'actor_id' => $actor_id
+  'actor_id' => $actor_id,
+  'similar_actors' => $similar_actors
 ];
 
 Template::displayTemplate('actor.html', $tags);
