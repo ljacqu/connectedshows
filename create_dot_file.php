@@ -6,6 +6,7 @@ require './inc/DatabaseHandler.php';
 
 require './inc/create_dot_file/ConnectionParameters.php';
 require './inc/create_dot_file/SqlHelper.php';
+require './inc/create_dot_file/DotWriter.php';
 
 $dbh = new DatabaseHandler($config);
 $form_error = '';
@@ -43,7 +44,6 @@ do {
   //return $colors[rand(0, count($colors)-1)];
     return 'black';
   };
-  require './inc/DotWriter.php';
   $form_file = $connection_params->getFile();
   $dot_writer = new DotWriter('./gen/' . $form_file, $penwidth, $color_function, $dbh);
   $dot_writer->createFile($query);
@@ -105,7 +105,7 @@ $tags = array_merge($connection_params->getTagCollection(), [
   'types' => $types
 ]);
 
-Template::displayTemplate('create_dot_file', $tags);
+Template::displayTemplate('inc/create_dot_file/create_dot_file.html', $tags);
 
 /**
  * Computes the maximum possible number of connections between shows

@@ -7,7 +7,7 @@ $test_result = [];
 // ==================
 // Quick directory check
 // ==================
-$dirs = ['./gen/', './html/', './inc/', './sql/'];
+$dirs = ['./gen/', './inc/', './sql/'];
 $missing_dir = [];
 foreach ($dirs as $dir) {
   if (!file_exists($dir) || !is_dir($dir)) {
@@ -81,7 +81,11 @@ if (isset($_GET['maketables'])) {
     $dbh->getDbh()->exec($sql);
     $message = 'Created any missing tables. Please run the '
       . '<a href="?">status check</a> to verify that everything works.';
-    Template::displayTemplate('install', ['message' => $message, 'table' => '', 'show_footer' => false]);
+    Template::displayTemplate('inc/system_check/system_check.html', [
+      'message' => $message,
+      'table' => '',
+      'show_footer' => false
+    ]);
     exit;
   }
 }
@@ -154,7 +158,11 @@ foreach ($test_result as $key => $test) {
     . "<td class=\"{$test->cssClass}\">" . $test->getMessage() . '</td></tr>';
 }
 $table .= '</table>';
-Template::displayTemplate('install', ['table' => $table, 'message' => $message, 'show_footer' => true]);
+Template::displayTemplate('inc/system_check/system_check.html', [
+  'table' => $table,
+  'message' => $message,
+  'show_footer' => true
+]);
 
 function register_db_error(TestItem $test_item, PDOException $ex) {
   global $config;

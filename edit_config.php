@@ -70,7 +70,7 @@ foreach ($config as $key => $value) {
   }
 }
 
-Template::displayTemplate('edit_config', $tags);
+Template::displayTemplate('inc/edit_config/edit_config.html', $tags);
 
 function check_format_commands($format_cmds) {
   if (!isset($format_cmds) || !is_array($format_cmds)) {

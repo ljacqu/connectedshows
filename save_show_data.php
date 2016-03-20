@@ -97,7 +97,7 @@ $tags = [
   'form_input' => htmlspecialchars($show_input),
   'form_reset_button' => ($display_reset_button ? ' <input type="submit" name="reset" value="Reset" class="submit">' : '')
 ];
-Template::displayTemplate('save_show_data', $tags);
+Template::displayTemplate('inc/save_show_data/save_show_data.html', $tags);
 
 
 

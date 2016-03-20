@@ -1,9 +1,11 @@
 <?php
 error_reporting(E_ALL);
-require './gen/config.php';
-require './inc/functions.php';
-require './inc/DatabaseHandler.php';
-require './inc/Template.php';
+
+require '../inc/Utils.php';
+require '../inc/Template.php';
+require '../gen/config.php';
+require '../inc/functions.php';
+require '../inc/DatabaseHandler.php';
 
 $dbh = new DatabaseHandler($config);
 $all_shows = [];
@@ -13,6 +15,7 @@ foreach ($dbh->getAllShows() as $show) {
 $input_shows = [];
 $message = '';
 $error = '';
+$show_roles_table = false;
 
 do {
   if (empty($_SERVER['QUERY_STRING'])) {
@@ -32,7 +35,7 @@ do {
 
   $show_filter = "`show_id` = '" . implode("' OR `show_id` = '", $input_shows) . "'";
   $sql = str_replace(['{show_filter}', '{total_shows}'], [$show_filter, $total_shows], 
-    file_get_contents('./sql/find_actors.sql'));
+    file_get_contents('../sql/find_actors.sql'));
   $sql_data = $dbh->getDbh()->query($sql);
 
   Actor::$dbh = $dbh;
@@ -41,25 +44,26 @@ do {
   }
   Actor::sortActors();
 
-  $message = '<table class="roles"><tr><th>Actor</th>';
-  foreach ($input_shows as $show) {
-    $message .= '<th colspan="2">' . $dbh->showTitle($show) . '</th>';
-  }
-  $message .= '</tr>';
   Actor::$inputShows = $input_shows;
+  $actors = [];
   foreach (Actor::$register as $actor) {
-    $message .= $actor->getTableEntry();
+    $actors[] = $actor->getActorTags();
   }
-  $message .= "\n</table>";
 } while (0);
+
+$selected_shows = array_map(function ($show) use ($dbh) {
+  return ['selected_show_title' => $dbh->showTitle($show)];
+}, $input_shows);
 
 $form_shows = make_shows_dropdown($dbh->getAllShows(), $input_shows);
 $tags = [
   'form_shows' => $form_shows,
+  'actors' => $actors ?: [],
+  'selected_shows' => $selected_shows,
   'message' => $message,
   'error' => $error
 ];
-Template::displayTemplate('connection', $tags);
+Template::displayTemplate('connection.html', $tags);
 
 class Actor {
 
@@ -104,14 +108,24 @@ class Actor {
     $this->id = $id;
   }
 
-  function getTableEntry() {
+  function getActorTags() {
+    return [
+      'actor_id' => $this->id,
+      'actor_name' => $this->getName(),
+      'actor_roles' => $this->getActorRoleTags()
+    ];
+  }
+
+  private function getActorRoleTags() {
     $this->sortRoles();
-    $row = "\n<tr><td class=\"right left\"><a href=\"actor.php?{$this->id}\">"
-      . $this->getName() . "</a></td>";
+    $roles = [];
     foreach ($this->roles as $role) {
-      $row .= "<td>{$role->role}</td><td class=\"episodes right\">{$role->episodes}</td>";
+      $roles[] = [
+        'actor_role_name' => $role->role,
+        'actor_role_episodes' => $role->episodes
+      ];
     }
-    return $row . "</tr>";
+    return $roles;
   }
 
   function sortRoles() {

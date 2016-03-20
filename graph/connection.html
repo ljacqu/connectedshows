@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
- <head>
+  <head>
     <meta charset="utf-8">
     <title>Show Connections &mdash; View Show Connections</title>
-    <link rel="stylesheet" type="text/css" href="./html/style.css">
-    <script type="text/javascript" src="./html/formtoggle.js"></script>
+    <link rel="stylesheet" type="text/css" href="../inc/style.css">
+    <script type="text/javascript" src="../inc/formtoggle.js"></script>
     <script type="text/javascript">
 function redir() {
     var checkboxes = document.getElementsByName("shows[]");
@@ -16,12 +16,29 @@ function redir() {
     window.location.replace("?" + qs.substr(1));
 }
     </script>
- </head>
- <body onload="checkallbox('all', 'shows[]')">
-    <div class="crumbs"><a href="index.php">Main</a> &raquo; View Show Connections</div>
+  </head>
+  <body onload="checkallbox('all', 'shows[]')">
+    <div class="crumbs"><a href="../index.php">Main</a> &raquo; Explore &raquo; View Show Connections</div>
     <h1>View TV Show Connections</h1>
     Find the common actors between selected TV shows.
     {message}
+    <table class="roles">
+      <tr>
+        <th>Actor</th>
+        [#selected_shows]
+          <th colspan="2">{selected_show_title}</th>
+        [/#selected_shows]
+      </tr>
+      [#actors]
+        <tr>
+          <td class="right left"><a href="actor.php?id={actor_id}">{actor_name}</a></td>
+          [#actor_roles]
+            <td>{actor_role_name}</td>
+            <td class="episodes right">{actor_role_episodes}</td>
+          [/#actor_roles]
+        </tr>
+      [/#actors]
+    </table>
     <div class="error">{error}</div>
 
     <form method="get" onsubmit="redir(); return false;">

@@ -21,7 +21,7 @@ if (!$has_problem) {
   $has_problem = doesDatabaseHaveProblem($config);
 }
 
-Template::displayTemplate("home", ['pages' => $pages, 'has_problem' => $has_problem]);
+Template::displayTemplate("inc/index/index.html", ['pages' => $pages, 'has_problem' => $has_problem]);
 
 
 function doesSystemHaveProblem() {
