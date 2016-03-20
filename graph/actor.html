@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Show Connections &mdash; View Actor</title>
+  <link rel="stylesheet" type="text/css" href="../inc/style.css">
+  <script type="text/javascript" src="../inc/formtoggle.js"></script>
+  <script type="text/javascript">
+    function redir() {
+      var checkboxes = document.getElementsByName("shows[]");
+      var totalboxes = checkboxes.length;
+      var qs = "";
+      for (var i = 0; i < totalboxes; ++i) {
+        if (checkboxes[i].checked) qs += "-" + checkboxes[i].value;
+      }
+      window.location.replace("?" + qs.substr(1));
+    }
+  </script>
+</head>
+<body onload="checkallbox('all', 'shows[]')">
+<div class="crumbs"><a href="../index.php">Main</a> &raquo; Explore &raquo; Actors</div>
+<h1>View Actor[actor_name]: {actor_name}[/actor_name]</h1>
+{message}
+[has_actor_data]
+  <table>
+    <tr>
+      <th>Show</th>
+      <th>Role</th>
+    </tr>
+    [#roles]
+    <tr>
+      <td><a href="show.php?id={show_id}">{title}</a></td>
+      <td>{role}</td>
+      <td>{episodes}</td>
+    </tr>
+    [/#roles]
+  </table>
+
+  <p>
+  Lookup: <a href="http://imdb.com/name/nm{actor_id}">IMDb</a> &middot;
+    <a href="http://google.com/search?q={actor_name}">Google</a> &middot;
+    <a href="http://google.com/search?q={actor_name}&amp;tbm=isch">Google Images</a>
+  </p>
+[/has_actor_data]
+[error]<div class="error">{error}</div>[/error]
+
+
+</body>
+</html>
