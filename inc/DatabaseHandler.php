@@ -43,9 +43,7 @@ class DatabaseHandler {
   
   function getAllShows() {
     return $this->dbh->query(
-       'SELECT `id`, `title`
-      FROM `shows`
-      ORDER BY `title`');
+       'SELECT id, title FROM shows ORDER BY title');
   }
   
   function healthcheck() {
@@ -53,7 +51,7 @@ class DatabaseHandler {
   }
   
   function getTotalShows() {
-    return $this->dbh->query('SELECT COUNT(1) FROM `shows`')->fetch()[0];
+    return $this->dbh->query('SELECT COUNT(1) FROM shows')->fetch()[0];
   }
   
   function showExists($id) {

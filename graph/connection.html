@@ -22,24 +22,26 @@ function redir() {
     <h1>View TV Show Connections</h1>
     Find the common actors between selected TV shows.
     {message}
-    <table class="roles">
-      <tr>
-        <th>Actor</th>
-        [#selected_shows]
-          <th colspan="2">{selected_show_title}</th>
-        [/#selected_shows]
-      </tr>
-      [#actors]
+    [show_roles_table]
+      <table class="roles">
         <tr>
-          <td class="right left"><a href="actor.php?id={actor_id}">{actor_name}</a></td>
-          [#actor_roles]
-            <td>{actor_role_name}</td>
-            <td class="episodes right">{actor_role_episodes}</td>
-          [/#actor_roles]
+          <th>Actor</th>
+          [#selected_shows]
+            <th colspan="2">{selected_show_title}</th>
+          [/#selected_shows]
         </tr>
-      [/#actors]
-    </table>
-    <div class="error">{error}</div>
+        [#actors]
+          <tr>
+            <td class="right left"><a href="actor.php?id={actor_id}">{actor_name}</a></td>
+            [#actor_roles]
+              <td>{actor_role_name}</td>
+              <td class="episodes right">{actor_role_episodes}</td>
+            [/#actor_roles]
+          </tr>
+        [/#actors]
+      </table>
+    [/show_roles_table]
+    [error]<div class="error">{error}</div>[/error]
 
     <form method="get" onsubmit="redir(); return false;">
       <br><label for="all">All:</label> <input type="checkbox" id="all" name="all" onchange="toggleboxes(this, 'shows[]')">
