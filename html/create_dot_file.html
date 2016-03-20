@@ -1,29 +1,41 @@
 <!DOCTYPE html>
 <html>
- <head>
+  <head>
     <meta charset="utf-8">
     <title>Show Connections &mdash; Make Graph File</title>
     <link rel="stylesheet" type="text/css" href="./html/style.css">
     <script type="text/javascript" src="./html/formtoggle.js"></script>
- </head>
- <body onload="checkallbox('all', 'shows[]')">
+  </head>
+  <body onload="checkallbox('all', 'shows[]')">
     <div class="crumbs"><a href="index.php">Main</a> &raquo; View TV Show Connections</div>
     <h1>View TV Show Connections</h1>
     {result}
     <div class="error">{form_error}</div>
 
     <form method="post">
-      File name: <input type="text" name="file" value="{form_file}">
-      <br>Only within selected shows: <input type="checkbox" name="limited"{checked_limited}>
-      <br>Episode threshold: <input type="text" name="threshold" value="{form_threshold}">
+      File name: <input type="text" name="file" value="{file}">
+      <br>Only within selected shows: <input type="checkbox" name="limited" [limit_to_selection]checked="checked"[/limit_to_selection]>
+      <br>Episode threshold: <input type="text" name="threshold" value="{threshold}">
       <br><span style="font-size: 0.8em">In order to consider an actor as connection, he must have played
        in at least as many episodes as the threshold in either show.</span>
       <br>
       <br>Threshold type: 
-      <br>Threshold <var>t</var> must be &lt;= {radio_type}
-      <br>Unit {radio_unit}
+      <br>Threshold <var>t</var> must be &gt;=
+      [#types]
+        <input type="radio" name="type" value="{type}" id="t_{type}" [type_checked]checked="checked"[/type_checked]>
+        <label for="t_{type}">{type_text}</label>
+      [/#types]
+      <br>Unit
+      [#units]
+        <input type="radio" name="unit" value="{unit_code}" id="u_{unit_code}" [unit_checked]checked="checked"[/unit_checked]>
+        <label for="u_{unit_code}">{unit_text}</label>
+      [/#units]
       <br><label for="all">All:</label> <input type="checkbox" id="all" name="all" onchange="toggleboxes(this, 'shows[]')">
-      <br>{form_shows}
+      [#all_shows]
+      <br><input type="checkbox" name="shows[]"
+      value="{id}" id="s{id}" [is_checked]checked="checked"[/is_checked]>
+      <label for="s{id}">{title}</label>
+      [/#all_shows]
       <br><input type="submit" class="submit" value="Create graph">
     </form>
    

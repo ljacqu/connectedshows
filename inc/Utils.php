@@ -33,4 +33,27 @@ final class Utils {
     return filter_input($input, $index, FILTER_UNSAFE_RAW, FILTER_REQUIRE_ARRAY) ?: $default;
   }
 
+  /**
+   * Returns whether the given input is an array whose values are all numeric.
+   *
+   * @param $input int the code of the input to use (e.g. INPUT_POST)
+   * @param $index string the name of the value to verify
+   * @return bool true if the array is all numeric, false otherwise
+   */
+  public static function isInputNumericArray($input, $index) {
+    $value = self::getArrayInput($input, $index, null);
+    if ($value === null) {
+      return false;
+    }
+
+    foreach ($value as $entry) {
+      // more intuitive is_int check
+      // http://php.net/manual/en/function.is-int.php#82857
+      if (!ctype_digit(strval($entry))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
 }

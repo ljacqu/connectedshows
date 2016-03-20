@@ -1,24 +1,26 @@
 <!DOCTYPE html>
 <html>
- <head>
+  <head>
     <meta charset="utf-8">
     <title>TV Show Connections &mdash; Troubleshooter</title>
     <link rel="stylesheet" type="text/css" href="./html/style.css">
- </head>
- <body>
+  </head>
+  <body>
     <div class="crumbs"><a href="index.php">Main</a> &raquo; Install &amp; Troubleshoot</div>
     <h1>Install &amp; Troubleshoot</h1>
     <p>
-     This page checks that the database and the required PHP features are working.
+      This page checks that the database and the required PHP features are working.
     </p>
     <p>
-     {message}
+      {message}
     </p>
     {table}
-    <p style="display: {show_footer}">
-     Run the <a href="?maketables">database installer</a> if you haven't yet or 
-     if you think a table is missing. Delete all tables from the database for a
-     clean install.
-    </p>
- </body>
+    [show_footer]
+      <p>
+        Run the <a href="?maketables">database installer</a> if you haven't yet or
+        if you think a table is missing. Delete all tables from the database for a
+        clean install.
+      </p>
+    [/show_footer]
+  </body>
 </html>

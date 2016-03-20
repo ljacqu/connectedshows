@@ -41,7 +41,7 @@ class Template {
   private static function handleRepetitionTag($template, $tagName, array $value) {
     if (strpos($template, "[#$tagName]") !== false) {
       preg_match("~\\[#$tagName](.*?)\\[/#$tagName]~s", $template, $matches);
-      $innerText = $matches[1];
+      $innerText = trim($matches[1]);
       $replacements = array_map(function ($values) use ($innerText) {
         return self::prepareTemplate($innerText, $values);
       }, $value);

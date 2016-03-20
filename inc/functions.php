@@ -13,16 +13,6 @@ function make_shows_dropdown(Traversable $show_data, array $checked_shows=[]) {
 	return $output;
 }
 
-
-function all_numeric(array $arr) {
-	foreach ($arr as $entry) {
-		// more intuitive is_int check
-		// http://php.net/manual/en/function.is-int.php#82857
-		if (!ctype_digit(strval($entry))) return false;
-	}
-	return true;
-}
-
 function fix_multiple_spaces($text) {
 	return preg_replace('/(\s+)/', ' ', $text);
 }

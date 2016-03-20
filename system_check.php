@@ -1,8 +1,6 @@
 <?php
-error_reporting(E_ALL);
-
+require './inc/header.php';
 require './inc/DatabaseHandler.php';
-require './inc/Template.php';
 
 $test_result = [];
 
@@ -23,7 +21,7 @@ if (empty($missing_dir)) {
     $test_result[1]->setError("Cannot write!");
   }
 } else {
-  $test_result[0]->setError("Directories do not exist: " . implode(" ", $missing_dir));
+  $test_result[0]->setError("Directories do not exist: " . implode(", ", $missing_dir));
   $test_result[1]->setUndefined();
 }
 
@@ -82,8 +80,8 @@ if (isset($_GET['maketables'])) {
     $sql = file_get_contents('./sql/create_tables.sql');
     $dbh->getDbh()->exec($sql);
     $message = 'Created any missing tables. Please run the '
-      . '<a href="install.php">status check</a> to verify that everything works.';
-    Template::displayTemplate('install', ['message' => $message, 'table' => '', 'show_footer' => 'none']);
+      . '<a href="?">status check</a> to verify that everything works.';
+    Template::displayTemplate('install', ['message' => $message, 'table' => '', 'show_footer' => false]);
     exit;
   }
 }
@@ -156,7 +154,7 @@ foreach ($test_result as $key => $test) {
     . "<td class=\"{$test->cssClass}\">" . $test->getMessage() . '</td></tr>';
 }
 $table .= '</table>';
-Template::displayTemplate('install', ['table' => $table, 'message' => $message, 'show_footer' => 'block']);
+Template::displayTemplate('install', ['table' => $table, 'message' => $message, 'show_footer' => true]);
 
 function register_db_error(TestItem $test_item, PDOException $ex) {
   global $config;
