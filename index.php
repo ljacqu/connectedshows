@@ -5,10 +5,11 @@ require './inc/header.php';
  * the available pages
  */
 $pages = [
-  page('create_dot_file', 'View TV Show Connections'),
-  page('save_show_data', 'Save data of a TV show'),
-  page('edit_config', 'Edit config'),
-  page('system_check', 'System Check')
+  page('create_dot_file.php', 'View TV Show Connections'),
+  page('save_show_data.php', 'Save data of a TV show'),
+  page('./graph/', 'Explore data'),
+  page('edit_config.php', 'Edit config'),
+  page('system_check.php', 'System Check')
 ];
 
 // -------
@@ -38,6 +39,6 @@ function doesDatabaseHaveProblem($config) {
   }
 }
 
-function page($file, $title) {
-  return ['file' => $file, 'title' => $title];
+function page($link, $title) {
+  return ['link' => $link, 'title' => $title];
 }

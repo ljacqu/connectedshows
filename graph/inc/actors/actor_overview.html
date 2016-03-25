@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Show Connections &mdash; Actors</title>
+  <link rel="stylesheet" type="text/css" href="../inc/style.css">
+</head>
+<body>
+<div class="crumbs"><a href="../index.php">Main</a> &raquo; <a href="index.php">Explore</a> &raquo; Actors</div>
+<h1>View Actors</h1>
+Shows actors with the most roles in the database's shows.
+
+<form method="post">
+  <label for="min">Minimum episode threshold:</label>
+  <input type="number" id="min" name="min" min="0" value="{episode_minimum}" />
+  <input type="submit" value="Search" />
+</form>
+<p>
+  We only consider the roles of an actor if he has played in
+  at least as many episode as in the given minimum. This helps you skip over
+  an actor's very minimal roles.
+</p>
+
+[no_actors_found]
+<p>
+  No actors could be found. (no actors in database? threshold too high?)
+</p>
+[/no_actors_found]
+
+[actors]
+<table>
+  <tr>
+    <th>Actor</th>
+    <th>Shows</th>
+  </tr>
+  [#actors]
+  <tr>
+    <td><a href="actor.php?id={actor_id}">{actor_name}</a></td>
+    <td>{show_count}</td>
+  </tr>
+  [/#actors]
+</table>
+[/actors]
+
+</body>
+</html>

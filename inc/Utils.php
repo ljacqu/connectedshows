@@ -21,6 +21,16 @@ final class Utils {
     return trim($value);
   }
 
+  public static function getIntegerInput($input, $index, $default) {
+    $scalarValue = self::getScalarInput($input, $index, null);
+    if (!$scalarValue) {
+      return $default;
+    }
+    return self::isInteger($scalarValue)
+      ? $scalarValue
+      : $default;
+  }
+
   /**
    * Returns a value from an input source and ensures it is an array.
    *
@@ -47,13 +57,17 @@ final class Utils {
     }
 
     foreach ($value as $entry) {
-      // more intuitive is_int check
-      // http://php.net/manual/en/function.is-int.php#82857
-      if (!ctype_digit(strval($entry))) {
+      if (!self::isInteger($entry)) {
         return false;
       }
     }
     return true;
+  }
+
+  // More intuitive is_int check
+  // http://php.net/manual/en/function.is-int.php#82857
+  private static function isInteger($entry) {
+    return ctype_digit(strval($entry));
   }
 
 }

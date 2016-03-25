@@ -6,9 +6,12 @@
     <link rel="stylesheet" type="text/css" href="../inc/style.css">
   </head>
   <body>
-    <div class="crumbs"><a href="../index.php">Main</a> &raquo; Explore &raquo; Actors</div>
+    <div class="crumbs"><a href="../index.php">Main</a>
+      &raquo; <a href="index.php">Explore</a>
+      &raquo; <a href="actor.php">Actors</a>
+    </div>
     <h1>View Actor[actor_name]: {actor_name}[/actor_name]</h1>
-    {message}
+    [error]<div class="error">{error}</div>[/error]
     [has_actor_data]
       <table>
         <tr>
@@ -38,6 +41,5 @@
         <a href="http://google.com/search?q={actor_name}&amp;tbm=isch">Google Images</a>
       </p>
     [/has_actor_data]
-    [error]<div class="error">{error}</div>[/error]
   </body>
 </html>
