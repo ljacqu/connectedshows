@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 23, 2015 at 08:33 PM
+-- Generation Time: Mar 25, 2016 at 10:32 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS `played_in` (
   `role` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `episodes` int(11) NOT NULL,
   UNIQUE KEY `unique_id` (`actor_id`,`show_id`),
-  FULLTEXT KEY `role` (`role`)
+  KEY `fk_played_show_id` (`show_id`),
+  KEY `fk_played_actor_id` (`actor_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -59,6 +60,13 @@ CREATE TABLE IF NOT EXISTS `shows` (
   `episodes` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Constraints for table `played_in`
+--
+ALTER TABLE `played_in`
+ADD CONSTRAINT `fk_played_show_id` FOREIGN KEY (`show_id`) REFERENCES `shows` (`id`),
+ADD CONSTRAINT `fk_played_actor_id` FOREIGN KEY (`actor_id`) REFERENCES `actors` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
