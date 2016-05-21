@@ -16,9 +16,12 @@
     <p style="font-size: 0.9em; border-bottom: 1px solid #ccc">
       Saved configurations:
       <select name="set" class="js-config-select"></select>
-      <button type="button" style="display: none" class="js-config-deletebtn">Delete</button>
+      <button type="button" style="display: none" class="js-config-reapplybtn" title="Reset the values to the selected configuration">Re-apply</button>
+      <button type="button" style="display: none" class="js-config-updatebtn" title="Saves the current values to the selected configuration">Update</button>
+      <button type="button" style="display: none" class="js-config-deletebtn" title="Deletes the selected configuration">Delete</button>
     </p>
     <!-- /Saved configurations -->
+
     <form method="post">
       File name: <input type="text" name="file" value="{file}">
       <br>Only within selected shows: <input type="checkbox" name="limited" [limit_to_selection]checked="checked"[/limit_to_selection]>
