@@ -19,7 +19,7 @@ class SqlHelper {
     if ($params->getThresholdType() === ConnectionParameters::TYPE_SUM) {
       return "q.episodes + p.episodes >= $threshold";
     } else {
-      $sqlOp = $params->getThresholdType() === 'MIN' ? 'AND' : 'OR';
+      $sqlOp = $params->getThresholdType() === ConnectionParameters::TYPE_MIN ? 'AND' : 'OR';
       return "q.episodes >= $threshold $sqlOp p.episodes >= $threshold";
     }
   }
