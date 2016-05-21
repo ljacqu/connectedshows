@@ -79,7 +79,7 @@ do {
     if (isset($_POST['reset'])) {
       $dbh->deleteShow($show_id);
     } else {
-      $error .= '<br>Show already exists! Did not save.';
+      $error .= '<br>Show already exists! Did not save.<br>Use reset below to copy the data from IMDb again.';
       $display_reset_button = true;
       break;
     }
@@ -95,7 +95,7 @@ $tags = [
   'result' => $result,
   'form_error' => $error,
   'form_input' => htmlspecialchars($show_input),
-  'form_reset_button' => ($display_reset_button ? ' <input type="submit" name="reset" value="Reset" class="submit">' : '')
+  'show_reset' => $display_reset_button
 ];
 Template::displayTemplate('inc/save_show_data/save_show_data.html', $tags);
 

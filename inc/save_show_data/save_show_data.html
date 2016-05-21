@@ -1,32 +1,39 @@
 <!DOCTYPE html>
 <html>
- <head>
+  <head>
     <meta charset="utf-8">
     <title>Show Connections &mdash; Save Show Data</title>
     <link rel="stylesheet" type="text/css" href="./inc/style.css">
- </head>
- <body>
+  </head>
+  <body>
     <div class="crumbs"><a href="index.php">Main</a> &raquo; Save Show Data</div>
     <form method="post">
-      <div style="float: left; padding-right: 50px; display: table-cell">
+      <div style="float: left; padding-right: 80px; display: table-cell">
        <h1>Save show data</h1>
        {result}
        <div class="error">{form_error}</div>
-       <label for="id">Enter the IMDb.com URL of a TV show.</label>
-       <br><input name="id" id="id" size="60" value="{form_input}">
+       <p>
+         <label for="id">Enter the IMDb.com URL of a TV show.</label>
+       </p>
+       <input name="id" id="id" size="60" value="{form_input}">
+       <br>
        <br><input type="submit" name="submit" class="submit" value="Save show">
-       {form_reset_button}
+        [show_reset]<input type="submit" name="reset" value="Reset" class="submit">[/show_reset]
       </div>
     </form>
-    <form method="get" action="http://www.google.com/search">
-     <div style="float: right; display: table-cell; font-size: 0.8em; margin-right: 30px; border: 1px solid #99f; padding: 5px">
-       <h1 style="margin-bottom: 3px">Find IMDb link for show</h1>
-       <span style="font-style: italic">Search for a show on IMDb.com</span>
-       <br>
-       <br><label for="q">Show title:</label> <input type="text" name="q" id="q" size="32" maxlength="255" value="">
-       <input type="hidden" name="sitesearch" value="imdb.com/title/">
-       <br><input type="submit" value="Search IMDb" class="submit">
-     </div>
+
+    <form method="get" action="http://www.imdb.com/find">
+      <div style="display: table-cell; margin-left: 70px">
+       <h1>Find IMDb link for show</h1>
+       <p>Search IMDb.com for a show (opens a popup).</p>
+       <label>Show title: <input type="text" name="q" size="32" maxlength="255" class="js-search-field"></label>
+       <input type="hidden" name="s" value="tt" />
+       <p style="text-align: center">
+         <input type="submit" value="Search IMDb" class="submit js-search-button">
+       </p>
+      </div>
     </form>
- </body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js" type="text/javascript"></script>
+    <script src="./js/save_show_data/search_popup.js" type="text/javascript"></script>
+  </body>
 </html>
