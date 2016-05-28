@@ -12,7 +12,3 @@ function make_shows_dropdown(Traversable $show_data, array $checked_shows=[]) {
 	}
 	return $output;
 }
-
-function fix_multiple_spaces($text) {
-	return preg_replace('/(\s+)/', ' ', $text);
-}

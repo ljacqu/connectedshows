@@ -21,14 +21,14 @@ class ActorDetailController {
     $actorName = $this->getActorName();
 
     if ($actorName) {
-      $sql_roles = $this->dbh->query(
-        str_replace('{actor_id}', $this->actorId,
-          file_get_contents('./inc/actors/find_shows_of_actor.sql')));
+      $sql_roles = $this->dbh->prepare(
+          file_get_contents('./inc/actors/find_shows_of_actor.sql'));
+      $sql_roles->execute(['actor_id' => $this->actorId]);
       $roles = $sql_roles->fetchAll(PDO::FETCH_ASSOC);
 
-      $sql_actors = $this->dbh->query(
-        str_replace('{actor_id}', $this->actorId,
-          file_get_contents('./inc/actors/find_most_common_actors.sql')));
+      $sql_actors = $this->dbh->prepare(
+          file_get_contents('./inc/actors/find_most_common_actors.sql'));
+      $sql_actors->execute(['actor_id' => $this->actorId]);
       $similar_actors = $sql_actors->fetchAll(PDO::FETCH_ASSOC);
 
       $hasActorData = true;

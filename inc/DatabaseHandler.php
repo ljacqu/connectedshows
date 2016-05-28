@@ -37,8 +37,7 @@ class DatabaseHandler {
   }
 
   private function prepareQueries() {
-    $showTitle = 'SELECT `title` FROM `shows`
-      WHERE `id` = ?';
+    $showTitle = 'SELECT title FROM shows WHERE id = ?';
     $this->showTitleQuery = $this->dbh->prepare($showTitle);
   }
 }

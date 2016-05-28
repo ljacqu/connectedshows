@@ -26,9 +26,10 @@ do {
   }
   $show_name = $show_data['title'];
 
-  $similar_shows = $dbh->getDbh()->query(
-    str_replace('{show_id}', $show_id,
-      file_get_contents('./inc/shows_with_common_actors.sql')))->fetchAll();
+  $similar_shows_stmt = $dbh->getDbh()->prepare(
+    file_get_contents('./inc/shows_with_common_actors.sql'));
+  $similar_shows_stmt->execute(['show_id' => $show_id]);
+  $similar_shows = $similar_shows_stmt->fetchAll();
 
   $message = 'There are ' . count($similar_shows) . ' shows with common actors';
 

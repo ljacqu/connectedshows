@@ -1,6 +1,6 @@
 /* Finds the actors a given actor has played together in the most shows.
  * Tags:
- *  {actor_id} The actor ID
+ *  actor_id: The actor ID
  */
 
 SELECT name AS similar_actor_name,
@@ -12,10 +12,10 @@ INNER JOIN actors
 WHERE show_id IN (
   SELECT show_id
   FROM played_in
-  WHERE actor_id = {actor_id}
+  WHERE actor_id = :actor_id
 )
-AND actor_id <> {actor_id}
+AND actor_id <> :actor_id
 GROUP BY actor_id
 HAVING similar_actor_count > 1
 ORDER BY similar_actor_count DESC
-LIMIT 10;
+LIMIT 10
