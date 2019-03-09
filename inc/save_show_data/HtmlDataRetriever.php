@@ -23,11 +23,12 @@ class HtmlDataRetriever {
     // Trim HTML down to the cast table
     $castTableHtml = explode('</tr>', self::isolateCastTableHtml($html));
 
-    $name_preg = '~<span class="itemprop" itemprop="name">(.*?)</span>~';
+    $name_preg = '~<a href="/name/nm\\d+/\\?ref_=ttfc_fc_cl_t\\d+" >(.*?)</a>~';
     $id_preg = '~<a href="/name/nm(\\d+)/\\?ref_=ttfc_fc_cl_i[0-9]+"~';
-    $role_preg = '~<div>\\s+(.*?)\\s+\\((\\d+) episode(s)?~';
+    $role_preg = '~<td class="character">\\s+(.*?)<a[^>]+>(\\d+) episodes?~';
+    $spinner_row_preg = '~<tr class="(even|odd)">\\s+<td colspan="4" id="episodes[^>]+>\\s+<img src="[^>]+spinner-[^>]+>\\s+</td>\\s*$~';
     $entry = [];
-    foreach ($castTableHtml as $cast) {
+    foreach ($castTableHtml as $i => $cast) {
       // Regex doesn't take kindly to new lines, so we replace them with a space
       // We also replace &nbsp; with a space because it doesn't always appear before
       // an actor's character... This helps us keep $role_preg simple
@@ -41,8 +42,8 @@ class HtmlDataRetriever {
         $episodes = $matches[2];
 
         $entry[] = [$id, $name, $role, $episodes];
-      } else {
-        echo '<br>Debug - skipped HTML line: ' . htmlspecialchars($cast);
+      } else if (!preg_match($spinner_row_preg, $cast)) {
+        echo '<br>Debug - skipped line ' . $i . ': ' . htmlspecialchars($cast) . '<hr/>';
       }
     }
     return $entry;

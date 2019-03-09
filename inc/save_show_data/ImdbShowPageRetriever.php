@@ -6,9 +6,9 @@
 class ImdbShowPageRetriever {
 
   static function retrieveShowIdFromUrl($input) {
-    // http://www.imdb.com/title/tt3155320/?ref_=rvi_tt
-    // http://www.imdb.com/title/tt3155320/fullcredits?ref_=tt_ov_st_sm
-    $urlPattern = '~^(http://)?(www\\.)?imdb\\.com/title/tt(?<id>[0-9]+)'
+    // https://www.imdb.com/title/tt3155320/?ref_=rvi_tt
+    // https://www.imdb.com/title/tt3155320/fullcredits?ref_=tt_ov_st_sm
+    $urlPattern = '~^(https://)?(www\\.)?imdb\\.com/title/tt(?<id>[0-9]+)'
       . '(/[a-z0-9=&_\\?-]*)?~';
 
     if (preg_match($urlPattern, $input, $matches)) {
@@ -51,6 +51,7 @@ class ImdbShowPageRetriever {
       CURLOPT_CONNECTTIMEOUT => 120, // timeout on connect
       CURLOPT_TIMEOUT => 120, // timeout on response
       CURLOPT_MAXREDIRS => 10, // stop after 10 redirects
+      CURLOPT_SSL_VERIFYPEER => false
     );
 
     $ch = curl_init($url);
