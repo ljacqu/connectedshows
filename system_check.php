@@ -129,10 +129,11 @@ if (!function_exists('curl_init')) {
 } else {
   try {
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "http://www.imdb.com/");
+    curl_setopt($ch, CURLOPT_URL, "https://www.imdb.com/");
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_exec($ch);
     $info = curl_getinfo($ch);
     if ($info['http_code'] !== 200) {

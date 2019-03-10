@@ -7,13 +7,14 @@
     <script type="text/javascript" src="../inc/formtoggle.js"></script>
     <script type="text/javascript">
 function redir() {
-    var checkboxes = document.getElementsByName("shows[]");
-    var totalboxes = checkboxes.length;
-    var qs = "";
-    for (var i = 0; i < totalboxes; ++i) {
-        if (checkboxes[i].checked) qs += "-" + checkboxes[i].value;
-    }
-    window.location.replace("?" + qs.substr(1));
+    const checkboxes = document.getElementsByName('shows[]');
+    let qs = '';
+    checkboxes.forEach(e => {
+      if (e.checked) {
+        qs += '-' + e.value;
+      }
+    });
+    window.location.replace('?' + qs.substr(1));
 }
     </script>
   </head>
@@ -46,7 +47,7 @@ function redir() {
     <form method="get" onsubmit="redir(); return false;">
       <br><label for="all">All:</label> <input type="checkbox" id="all" name="all" onchange="toggleboxes(this, 'shows[]')">
       <br>{form_shows}
-      <br><input type="submit" class="submit" value="Create graph">
+      <br><input type="submit" class="submit" value="View common actors">
     </form>
    
  </body>

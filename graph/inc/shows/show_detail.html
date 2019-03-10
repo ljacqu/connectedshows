@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Show Connections &mdash; Show</title>
+    <link rel="stylesheet" type="text/css" href="../inc/style.css">
+</head>
+<body>
+<div class="crumbs"><a href="../index.php">Main</a> &raquo; <a href="index.php">Explore</a> &raquo; <a href="show.php">Show</a></div>
+<h1>View Show[show_name]: {show_name}[/show_name]</h1>
+{message}
+[error]<div class="error">{error}</div>[/error]
+[similar_shows]
+<table>
+    <tr>
+        <th>Show</th>
+        <th>Common actors</th>
+    </tr>
+    [#similar_shows]
+    <tr>
+        <td><a href="show.php?id={similar_show_id}">{similar_show_title}</a></td>
+        <td style="text-align: right"><a href="connection.php?{show_id}-{similar_show_id}">{similar_show_actors}</a></td>
+    </tr>
+    [/#similar_shows]
+</table>
+[/similar_shows]
+
+</body>
+</html>

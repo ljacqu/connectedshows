@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Show Connections &mdash; Show</title>
+    <link rel="stylesheet" type="text/css" href="../inc/style.css">
+</head>
+<body>
+<div class="crumbs"><a href="../index.php">Main</a> &raquo; <a href="index.php">Explore</a> &raquo; Show</div>
+<h1>Shows overview</h1>
+<table>
+    <tr>
+        <th>Show</th>
+        <th>Episodes</th>
+        <th>Actors</th>
+    </tr>
+    [#shows]
+    <tr>
+        <td><a href="show.php?id={id}">{title}</a></td>
+        <td style="text-align: right">{episodes}</td>
+        <td style="text-align: right">{actors}</td>
+    </tr>
+    [/#shows]
+</table>
+
+</body>
+</html>
