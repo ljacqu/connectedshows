@@ -1,2 +1,7 @@
 .idea/
-gen/configs.json
+gen/
+!gen/config.json
+!gen/configs.json
+# sample graphs
+!gen/graph.dot
+!gen/graph.svg
