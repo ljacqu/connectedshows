@@ -9,7 +9,7 @@ select actor_id, name actor_name, count(show_id) show_count
 from played_in
 inner join actors
   on actors.id = actor_id
-where episodes > :min_episodes
+where episodes >= :min_episodes
 group by actor_id
 order by show_count desc
 limit 50

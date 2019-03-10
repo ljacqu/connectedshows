@@ -19,6 +19,7 @@ class ActorDetailController {
     $roles = [];
     $similar_actors = [];
     $actorName = $this->getActorName();
+    $imdb_actor_id = '';
 
     if ($actorName) {
       $sql_roles = $this->dbh->prepare(
@@ -30,6 +31,7 @@ class ActorDetailController {
           file_get_contents('./inc/actors/find_most_common_actors.sql'));
       $sql_actors->execute(['actor_id' => $this->actorId]);
       $similar_actors = $sql_actors->fetchAll(PDO::FETCH_ASSOC);
+      $imdb_actor_id = str_pad($this->actorId, 7, '0', STR_PAD_LEFT); // For IMDB links need to pad with zeroes
 
       $hasActorData = true;
     } else {
@@ -42,6 +44,7 @@ class ActorDetailController {
       'has_actor_data' => $hasActorData,
       'actor_name' => $actorName,
       'actor_id' => $this->actorId,
+      'imdb_actor_id' => $imdb_actor_id,
       'similar_actors' => $similar_actors
     ];
 

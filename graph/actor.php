@@ -16,7 +16,7 @@ if ($actor_id) {
   $actorDetailCtrl = new ActorDetailController($actor_id, $dbh);
   $actorDetailCtrl->run();
 } else {
-  $minimum_input = max(0, Utils::getIntegerInput(INPUT_POST, 'min', 5));
+  $minimum_input = max(1, Utils::getIntegerInput(INPUT_POST, 'min', 5));
   $actorOverviewCtrl = new ActorOverviewController($minimum_input, $dbh);
   $actorOverviewCtrl->run();
 }
