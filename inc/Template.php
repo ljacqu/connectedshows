@@ -26,7 +26,11 @@ class Template {
   private static function handleConditionalTag($template, $tagName, $value) {
     if (strpos($template, "[$tagName]") !== false) {
       $innerReplacement = $value ? '\\2' : '';
-      return preg_replace("~(\\[{$tagName}](.*?)\\[/{$tagName}])~s", $innerReplacement, $template);
+      $template = preg_replace("~(\\[{$tagName}](.*?)\\[/{$tagName}])~s", $innerReplacement, $template);
+    }
+    if (strpos($template, "[!$tagName]") !== false) {
+      $innerReplacement = $value ? '' : '\\2';
+      $template = preg_replace("~(\\[!{$tagName}](.*?)\\[/!{$tagName}])~s", $innerReplacement, $template);
     }
     return $template;
   }

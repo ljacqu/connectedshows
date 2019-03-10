@@ -25,15 +25,17 @@ class SaveShowDatabaseController {
   }
 
   function saveShowInfo($title, $showId, array $actors) {
+    $max_episodes = array_reduce($actors, function ($carry, $actor) {
+      return max($carry, $actor[3]);
+    }, 0);
+
     $this->dbh->beginTransaction();
-    $max = 0;
-    $this->registerShow($showId, $title, $max);
+    $this->registerShow($showId, $title, $max_episodes);
     foreach ($actors as $actor) {
       if (!$this->actorExists($actor[0])) {
         $this->registerActor($actor[0], $actor[1]);
       }
       $this->registerRole($actor[0], $showId, $actor[2], $actor[3]);
-      if ($max < $actor[3]) $max = $actor[3];
     }
     $this->dbh->commit();
   }
@@ -73,7 +75,7 @@ class SaveShowDatabaseController {
     $this->registerActorQuery = $this->dbh->prepare(
       'INSERT INTO actors (id, name) VALUES (?, ?)');
     $this->registerShowQuery = $this->dbh->prepare(
-      'INSERT INTO shows (id, title, episodes) VALUES (?, ?, ?)');
+      'INSERT INTO shows (id, title, episodes, retrieval_date) VALUES (?, ?, ?, NOW())');
     $this->registerRoleQuery = $this->dbh->prepare(
       'INSERT INTO played_in (actor_id, show_id, role, episodes) VALUES (?, ?, ?, ?)');
     $this->actorExistsQuery = $this->dbh->prepare(

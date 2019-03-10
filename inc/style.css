@@ -21,11 +21,18 @@ textarea, input {
 }
 input.submit {
     border: 1px outset #339;
-    border-radius: 0;
+    border-radius: 4px;
     background-color: #def;
     margin: 5px 8px;
 }
-input.submit:hover {
+button {
+    border: 1px inset #00c;
+    border-radius: 4px;
+    background-color: #def;
+    margin: 2px;
+    font-size: 12pt;
+}
+input.submit:hover, button:hover {
     background-color: #fff5f5;
 }
 label:hover {

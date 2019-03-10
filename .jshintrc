@@ -1,4 +1,5 @@
 {
+  "esversion": 6,
   "browser": true,
   "jquery": true,
   "maxdepth": 3,

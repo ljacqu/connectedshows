@@ -26,7 +26,8 @@ class ImdbShowPageRetriever {
     $url = self::buildCastUrl($showId);
     $response = self::loadWebPage($url);
     if ($response['errno'] !== 0 || $response['http_code'] !== 200) {
-      throw new Exception('Error fetching page! ' . $response['errno'] . ' : ' . $response['errmsg']);
+      throw new Exception('Error fetching URL "' . htmlspecialchars($url) . '": '
+        . $response['errno'] . ' : ' . $response['errmsg']);
     }
     return $response['content'];
   }
