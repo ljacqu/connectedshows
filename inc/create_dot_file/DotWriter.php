@@ -76,7 +76,7 @@ class DotWriter {
     $output = '';
     if ($rand) $this->showToId = $this->shuffleAssoc($this->showToId);
     foreach ($this->showToId as $key => $name) {
-      $href = self::GRAPH_PATH . "show.php?" . substr($key, 1);
+      $href = self::GRAPH_PATH . "show.php?id=" . substr($key, 1);
       $output .= "\n\t{$key} [label=\"{$name}\",href=\"$href\"];";
     }
     return $output;

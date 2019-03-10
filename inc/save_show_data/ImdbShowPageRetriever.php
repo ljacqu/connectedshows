@@ -70,7 +70,7 @@ class ImdbShowPageRetriever {
   }
 
   private static function buildCastUrl($id) {
-    return "http://www.imdb.com/title/tt{$id}/fullcredits";
+    return "https://www.imdb.com/title/tt{$id}/fullcredits";
   }
 
 }

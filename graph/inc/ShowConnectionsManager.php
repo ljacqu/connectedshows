@@ -62,13 +62,7 @@ class ShowConnectionsManager {
     usort($this->actors, function($a, $b) {
       $aRelevance = $this->getRelevance($a);
       $bRelevance = $this->getRelevance($b);
-
-      if ($aRelevance < $bRelevance)
-        return 1;
-      else if ($aRelevance > $bRelevance)
-        return -1;
-      else
-        return 0;
+      return $bRelevance <=> $aRelevance;
     });
   }
 
@@ -124,7 +118,8 @@ class Actor {
     return [
       'actor_id' => $this->id,
       'actor_name' => $this->name,
-      'actor_roles' => $this->getActorRoleTags($showOrder)
+      'actor_roles' => $this->getActorRoleTags($showOrder),
+      'grade' => $this->computeGrade()
     ];
   }
 
@@ -144,13 +139,25 @@ class Actor {
     usort($this->roles, function($a, $b) use ($showOrder) {
       $aKey = array_search($a->show, $showOrder);
       $bKey = array_search($b->show, $showOrder);
-      if ($aKey < $bKey)
-        return -1;
-      else if ($aKey > $bKey)
-        return 1;
-      else
-        return 0;
+      return $aKey <=> $bKey;
     });
+  }
+
+  private function computeGrade() {
+    $max = array_reduce($this->roles, function ($carry, $role) {
+      return max($carry, $role->episodes);
+    }, 0);
+    $min = array_reduce($this->roles, function ($carry, $role) {
+      return min($carry, $role->episodes);
+    }, PHP_INT_MAX);
+    if ($min >= 5) {
+      return 1;
+    } else if ($min >= 2) {
+      return 2;
+    } else if ($max > 1) {
+      return 3;
+    }
+    return 4;
   }
 }
 

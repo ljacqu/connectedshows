@@ -106,3 +106,15 @@ td.right {
 td.left {
     border-left: 1px solid #000;
 }
+.grade-1 {
+    background-color: #e9ffe9;
+}
+.grade-2 {
+    background-color: #fcfcda;
+}
+.grade-3 {
+    background-color: #fff0e0;
+}
+.grade-4 {
+    background-color: #ffe6e6;
+}

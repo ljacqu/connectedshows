@@ -7,6 +7,9 @@ class DatabaseHandler {
   /** @var PDOStatement */
   private $showTitleQuery;
 
+  /** @var PDOStatement */
+  private $showInfoQuery;
+
   function __construct(array $config) {
     if (empty($config)) throw new PDOException("Could not get config data!");
     $dsn = 'mysql:dbname='.$config['db_name'].';host=localhost';
@@ -36,8 +39,13 @@ class DatabaseHandler {
     return $this->showTitleQuery->fetch(PDO::FETCH_NUM)[0];
   }
 
+  function getShowInfo($id) {
+    $this->showInfoQuery->execute([$id]);
+     return $this->showInfoQuery->fetch(PDO::FETCH_ASSOC);
+  }
+
   private function prepareQueries() {
-    $showTitle = 'SELECT title FROM shows WHERE id = ?';
-    $this->showTitleQuery = $this->dbh->prepare($showTitle);
+    $this->showTitleQuery = $this->dbh->prepare('SELECT title FROM shows WHERE id = ?');
+    $this->showInfoQuery = $this->dbh->prepare('SELECT title, episodes FROM shows WHERE id = ?');
   }
 }

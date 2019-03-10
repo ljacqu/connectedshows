@@ -23,16 +23,16 @@ function redir() {
     <h1>View TV Show Connections</h1>
     Find the common actors between selected TV shows.
     {message}
-    [show_roles_table]
+    [actors]
       <table class="roles">
         <tr>
           <th>Actor</th>
           [#selected_shows]
-            <th colspan="2">{selected_show_title}</th>
+            <th colspan="2">{title} ({episodes})</th>
           [/#selected_shows]
         </tr>
         [#actors]
-          <tr>
+          <tr [grade]class="grade-{grade}"[/grade]>
             <td class="right left"><a href="actor.php?id={actor_id}">{actor_name}</a></td>
             [#actor_roles]
               <td>{actor_role_name}</td>
@@ -41,7 +41,7 @@ function redir() {
           </tr>
         [/#actors]
       </table>
-    [/show_roles_table]
+    [/actors]
     [error]<div class="error">{error}</div>[/error]
 
     <form method="get" onsubmit="redir(); return false;">

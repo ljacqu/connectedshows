@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `shows` (
   `id` int(11) NOT NULL,
   `title` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `episodes` int(11) NOT NULL,
-  `retrieval_date` date,
+  `retrieval_date` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

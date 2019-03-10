@@ -18,7 +18,7 @@ graph.
 Requirements
 ------------
 
-- PHP 5
+- PHP 7
 - SQL database engine (e.g. MySQL)
 - [GraphViz](http://www.graphviz.org/Download..php) <sup>[1]</sup>
 

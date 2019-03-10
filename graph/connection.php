@@ -16,7 +16,6 @@ $input_shows = [];
 $message = '';
 $error = '';
 $actors = [];
-$show_roles_table = false;
 
 do {
   if (empty($_SERVER['QUERY_STRING'])) {
@@ -45,17 +44,15 @@ do {
   }
 
   $actors = $connections_manager->getActorTags();
-  $show_roles_table = true;
 } while (0);
 
 $selected_shows = array_map(function ($show) use ($dbh) {
-  return ['selected_show_title' => $dbh->showTitle($show)];
+  return $dbh->getShowInfo($show);
 }, $input_shows);
 
 $form_shows = make_shows_dropdown(new ArrayIterator($all_shows), $input_shows);
 $tags = [
   'form_shows' => $form_shows,
-  'show_roles_table' => $show_roles_table,
   'actors' => $actors ?: [],
   'selected_shows' => $selected_shows,
   'message' => $message,
