@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <title>Show Connections &mdash; Show</title>
   <link rel="stylesheet" type="text/css" href="../inc/style.css">
+  <script type="text/javascript" src="../inc/formtoggle.js"></script>
 </head>
 <body>
 <div class="crumbs"><a href="../index.php">Main</a> &raquo; <a href="index.php">Explore</a> &raquo; All show connections</div>
@@ -25,5 +26,14 @@
     </tr>
   [/#connections]
 </table>
+
+<form method="post">
+  <br><label for="all">All:</label> <input type="checkbox" id="all" name="all" onchange="toggleboxes(this, 'shows[]')">
+  <br>{form_shows}
+  <br>
+  <br><label for="least">Min episodes to be considered:</label> <input type="number" id="least" name="least" value="{least}" min="1">
+  <br><label for="greatest">Max episodes to be considered:</label> <input type="number" id="greatest" name="greatest" value="{greatest}" min="1">
+  <br><input type="submit" class="submit" value="View connections">
+</form>
 </body>
 </html>

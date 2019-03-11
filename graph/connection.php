@@ -59,7 +59,7 @@ $selected_shows = array_map(function ($show) use ($dbh) {
   return $dbh->getShowInfo($show);
 }, $input_shows);
 
-$form_shows = make_shows_dropdown(new ArrayIterator($all_shows), $input_shows, $shows_with_connections);
+$form_shows = make_shows_dropdown($all_shows, $input_shows, $shows_with_connections);
 $tags = [
   'form_shows' => $form_shows,
   'actors' => $actors ?: [],

@@ -1,6 +1,6 @@
 <?php
 
-function make_shows_dropdown(Traversable $show_data, array $checked_shows, array $shows_with_connections) {
+function make_shows_dropdown(array $show_data, array $checked_shows, array $shows_with_connections) {
 	$output = '';
 	$gray_out_if_no_connection = !empty($checked_shows);
 
