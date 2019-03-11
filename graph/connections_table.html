@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Show Connections &mdash; Show</title>
+  <link rel="stylesheet" type="text/css" href="../inc/style.css">
+</head>
+<body>
+<div class="crumbs"><a href="../index.php">Main</a> &raquo; <a href="index.php">Explore</a> &raquo; All show connections</div>
+<h1>Show connections</h1>
+<table class="overview">
+  <tr>
+    [#shows]
+      <td style="transform: rotate(-90deg)" title="{title}">{short_title}</td>
+    [/#shows]
+  </tr>
+  [#connections]
+    <tr>
+      [#cells]
+        <td [grade]class="grade-{grade}"[/grade]>
+          [show_link]<a href="connection.php?{id1}-{id2}">{val}</a>[/show_link]
+          [!show_link]{val}[/!show_link]
+        </td>
+      [/#cells]
+    </tr>
+  [/#connections]
+</table>
+</body>
+</html>

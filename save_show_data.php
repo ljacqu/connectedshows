@@ -1,7 +1,6 @@
 <?php
 error_reporting(E_ALL);
 require './gen/config.php';
-require './inc/functions.php';
 require './inc/Template.php';
 require './inc/DatabaseHandler.php';
 require './inc/Utils.php';
