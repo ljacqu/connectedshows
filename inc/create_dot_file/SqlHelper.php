@@ -31,7 +31,7 @@ class SqlHelper {
     if ($params->getThresholdType() === ConnectionParameters::TYPE_SUM) {
       return "$rate1 + $rate2 >= $threshold";
     } else {
-      $sqlOp = $params->getThresholdType() === 'MIN' ? 'AND' : 'OR';
+      $sqlOp = $params->getThresholdType() === ConnectionParameters::TYPE_MIN ? 'AND' : 'OR';
       return "$rate1 >= $threshold $sqlOp $rate2 >= $threshold";
     }
   }
