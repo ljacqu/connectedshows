@@ -58,8 +58,10 @@ class DotWriter {
     $showId = [$this->showToId($show1), $this->showToId($show2)];
     $penwidth = $penwidthFn($commonActors);
     $href = self::GRAPH_PATH . "connection.php?$show1-$show2";
+    $pluralS = $commonActors > 1 ? 's' : '';
     return "{$showId[0]} -- {$showId[1]} [penwidth=$penwidth,"
       . "color=\"" . $colorFn($penwidth, $show1, $show2) . "\","
+      . "tooltip=\"$commonActors actor{$pluralS}\""
       . "href=\"$href\"]";
   }
 
