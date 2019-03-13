@@ -25,5 +25,31 @@
 </table>
 [/similar_shows]
 
+<h2>Significant Actors</h2>
+<table>
+    <tr><th>Actor</th><th>Role</th><th>Episodes</th><th>Other shows</th></tr>
+    [#significant_actors]
+    <tr>
+        <td><a href="actor.php?id={actor_id}">{name}</a></td>
+        <td>{role}</td>
+        <td style="text-align: right">{episodes}</td>
+        <td style="text-align: right">{other_shows}</td>
+    </tr>
+    [/#significant_actors]
+</table>
+
+<h2>Actors With Other Roles</h2>
+<table>
+    <tr><th>Actor</th><th>Role</th><th>Episodes</th><th>Other shows</th></tr>
+    [#actors_by_other_shows]
+    <tr>
+        <td><a href="actor.php?id={actor_id}">{name}</a></td>
+        <td>{role}</td>
+        <td style="text-align: right">{episodes}</td>
+        <td style="text-align: right">{other_shows}</td>
+    </tr>
+    [/#actors_by_other_shows]
+</table>
+
 </body>
 </html>

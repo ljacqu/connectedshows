@@ -15,6 +15,8 @@ class ShowDetailController {
   function run($show_id) {
     $show_name = '';
     $similar_shows = [];
+    $significant_actors = [];
+    $actors_by_other_shows = [];
     $message = '';
     $error = '';
 
@@ -33,6 +35,16 @@ class ShowDetailController {
       $similar_shows_stmt->execute(['show_id' => $show_id]);
       $similar_shows = $similar_shows_stmt->fetchAll();
 
+      $significant_actors_stmt = $this->dbh->getDbh()->prepare(
+        file_get_contents('./inc/shows/actors_by_episode_count.sql'));
+      $significant_actors_stmt->execute(['show_id' => $show_id]);
+      $significant_actors = $significant_actors_stmt->fetchAll();
+
+      $actors_by_other_shows_stmt = $this->dbh->getDbh()->prepare(
+        file_get_contents('./inc/shows/actors_other_roles.sql'));
+      $actors_by_other_shows_stmt->execute(['show_id' => $show_id]);
+      $actors_by_other_shows = $actors_by_other_shows_stmt->fetchAll();
+
       $message = 'There are ' . count($similar_shows) . ' shows with common actors';
 
     } while (0);
@@ -43,7 +55,9 @@ class ShowDetailController {
       'message' => $message,
       'show_id' => $show_id,
       'show_name' => htmlspecialchars($show_name),
-      'similar_shows' => $similar_shows
+      'similar_shows' => $similar_shows,
+      'significant_actors' => $significant_actors,
+      'actors_by_other_shows' => $actors_by_other_shows
     ];
     Template::displayTemplate('./inc/shows/show_detail.html', $tags);
   }
